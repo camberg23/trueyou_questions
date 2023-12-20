@@ -15,6 +15,16 @@ st.title("TypeFinder Blog Post Generator")
 # Title input
 st.write("**This tool will generate blogs for all 16 TypeFinder types given a fixed topic.** When you write your title, **use the placeholder 'Xs'** for where the types (eg, INTPs, ENFJs) will go.")
 st.write("*Examples: The Best Paying Careers for Xs, Best Jobs for Xs That Don't Require a College Degree, etc.*")
+
+# Radio button for demo selection
+demo_option = st.radio("Demo?", ("Yes", "No"))
+
+# Define typefinders based on demo selection
+if demo_option == "Yes":
+    typefinders = ["INTP", "ESFJ"]
+else:
+    typefinders = ["ISTJ", "ISFJ", "INFJ", "INTJ", "ISTP", "ISFP", "INFP", "INTP", "ESTP", "ESFP", "ENFP", "ENTP", "ESTJ", "ESFJ", "ENFJ", "ENTJ"]
+    
 title = st.text_input("Blog Title:")
 
 # Button to generate topics based on the title
@@ -31,9 +41,6 @@ if st.button("Generate Skeleton for This Blog"):
 st.write("Next, edit the generated skeleton as needed, or regenerate the skeleton entirely if you don't like this structure.")
 st.write("(Note: please don't replace or modify the markdown (###, **, etc) or '{TYPE}s' notation)")
 edited_headers = st.text_area("**Generated skeleton:**", value=st.session_state.get('generated_headers', ''), height=400)
-
-typefinders = ["ISTJ", "ISFJ", "INFJ", "INTJ", "ISTP", "ISFP", "INFP", "INTP", "ESTP", "ESFP", "ENFP", "ENTP", "ESTJ", "ESFJ", "ENFJ", "ENTJ"]
-typefinders = ["ISTJ", "ISFJ"]
 
 # When the user is ready to generate the blog post
 if st.button("**Generate blog posts for all TypeFinder types with the skeleton as it appears above**"):
