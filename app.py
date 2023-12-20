@@ -1,5 +1,4 @@
 import streamlit as st
-import tiktoken
 import requests
 from openai import OpenAI
 from langchain.chat_models import ChatOpenAI
