@@ -59,7 +59,7 @@ if st.button("**Generate blog posts for all TypeFinder types with the skeleton a
 
     # Display the generated blog posts in expanders
     for typefinder, blog in blogs.items():
-        with st.expander(f"{title.replace('Xs', f'{typefinder}s')}"):
+        with st.expander(typefinder):
             st.markdown(blog, unsafe_allow_html=True)
 
     # Reset progress bar
