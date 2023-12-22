@@ -5,6 +5,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.llms import OpenAI 
 from langchain.prompts import PromptTemplate 
 from langchain.chains import LLMChain
+import io
 from system_messages import *
 
 chat_model = ChatOpenAI(openai_api_key=st.secrets['API_KEY'], model_name='gpt-4-1106-preview', temperature=0.2, max_tokens=4096)
