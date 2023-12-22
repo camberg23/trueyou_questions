@@ -60,15 +60,15 @@ if st.button("**Generate blog posts for all TypeFinder types with the skeleton a
         # Compile all blogs in a single string
         all_blogs_content += f"\n# Blog for {typefinder}\n{blog}\n\n---\n"
 
-    # Create a text buffer
-    txt_buffer = io.StringIO(all_blogs_content)
+    # Convert the string to bytes
+    bytes_data = all_blogs_content.encode()
 
     # Download button for the compiled blogs
-    st.download_button(label="Download Blogs as Markdown", data=txt_buffer, file_name=f"{title}.md", mime="text/markdown")
+    st.download_button(label="Download Blogs as Markdown", data=bytes_data, file_name=f"{title}.md", mime="text/markdown")
 
     # Reset progress bar
     my_bar.empty()
-
+    
 # # When the user is ready to generate the blog post
 # if st.button("**Generate blog posts for all TypeFinder types with the skeleton as it appears above**"):
 #     blogs = {}
