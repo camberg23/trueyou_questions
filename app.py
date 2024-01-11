@@ -60,6 +60,10 @@ if st.button("**Generate blog posts for all TypeFinder types with the skeleton a
         # Compile all blogs in a single string
         all_blogs_content += f"\n# Blog for {typefinder}\n{blog}\n\n---\n"
 
+        # Create an expander for each blog
+        with st.expander(f"Blog for {typefinder}"):
+            st.markdown(blog, unsafe_allow_html=True)
+
     # Convert the string to bytes
     bytes_data = all_blogs_content.encode()
 
