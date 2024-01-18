@@ -14,6 +14,8 @@ chat_model = ChatOpenAI(openai_api_key=st.secrets['API_KEY'], model_name='gpt-4-
 file_path = 'questions.csv'
 df = pd.read_csv(file_path)
 
+st.set_page_config(page_title='TrueYou Question Generator', page_icon=None, layout="wide")
+
 # Streamlit UI setup
 st.title("TrueYou Question Generator")
 
