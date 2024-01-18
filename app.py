@@ -24,14 +24,14 @@ st.dataframe(df)
 # Scale selection for generating new questions
 scale_options = df['Scale Name'].unique()
 selected_scales = st.multiselect("Select scales to generate questions for:", scale_options)
-
+N = 5
 # Button to generate new questions
 if st.button("Generate New Questions"):
     for scale in selected_scales:
         # Filter dataframe for the selected scale
         scale_df = df[df['Scale Name'] == scale]
         chat_chain = LLMChain(prompt=PromptTemplate.from_template(new_questions_prompt), llm=chat_model)
-        generated_output = chat_chain.run(scale=scale, existing_items=scale_df.to_string(index=False)) # Adjust parameters based on your LLM setup
+        generated_output = chat_chain.run(N=N, scale=scale, existing_items=scale_df.to_string(index=False)) # Adjust parameters based on your LLM setup
 
         st.write(generated_output)  # To inspect the output format
 
