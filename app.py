@@ -27,11 +27,11 @@ col1, col2 = st.columns([3, 1])
 # Column for scale selection
 with col1:
     scale_options = [f"{row['Scale Name']} ({row['Cat']})" for _, row in df.drop_duplicates(['Scale Name', 'Cat']).iterrows()]
-    selected_scales = st.multiselect("Select scales to generate questions for:", scale_options)
+    selected_scales = st.multiselect("Select which scales you'd like to generate new questions for:", scale_options)
 
 # Column for specifying the number of new questions
 with col2:
-    N = st.number_input("Number of new questions:", min_value=1, max_value=25, value=5)
+    N = st.number_input("Number of new questions for each scale:", min_value=1, max_value=25, value=5)
 
 # Button to generate new questions
 if st.button("Generate New Questions"):
@@ -42,7 +42,7 @@ if st.button("Generate New Questions"):
         chat_chain = LLMChain(prompt=PromptTemplate.from_template(new_questions_prompt), llm=chat_model)
         generated_output = chat_chain.run(N=N, scale=scale, existing_items=scale_df.to_string(index=False))
 
-        st.write(generated_output)  # To inspect the output format
+        # st.write(generated_output)  # To inspect the output format
 
         # Process the generated questions
         new_items = []
