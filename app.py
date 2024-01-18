@@ -18,7 +18,7 @@ df = pd.read_csv(file_path)
 st.title("TrueYou Question Generator")
 
 # Expander for the current scale questions table
-with st.expander("Click here to see all current scale questions"):
+with st.expander("Click here to see all current scales and questions"):
     st.dataframe(df)
 
 # Layout with two columns
