@@ -29,9 +29,10 @@ N = 5
 if st.button("Generate New Questions"):
     for scale in selected_scales:
         # Filter dataframe for the selected scale
-        scale_df = df[df['Scale Name'] == scale]
+        scale_df = df[df['Scale Name'] == scale].copy()
+
         chat_chain = LLMChain(prompt=PromptTemplate.from_template(new_questions_prompt), llm=chat_model)
-        generated_output = chat_chain.run(N=N, scale=scale, existing_items=scale_df.to_string(index=False)) # Adjust parameters based on your LLM setup
+        generated_output = chat_chain.run(N=N, scale=scale, existing_items=scale_df.to_string(index=False))
 
         st.write(generated_output)  # To inspect the output format
 
@@ -46,6 +47,14 @@ if st.button("Generate New Questions"):
         # Append new items to the scale DataFrame and apply styling
         if new_items:
             new_items_df = pd.DataFrame(new_items)
-            scale_df = pd.concat([scale_df, new_items_df], ignore_index=True)
+            combined_df = pd.concat([scale_df, new_items_df], ignore_index=True)
+            
+            # Determine the rows to apply the styling
+            num_existing_rows = len(scale_df)
             st.write(f"Updated Scale Questions for {scale}:")
-            st.dataframe(scale_df.style.apply(lambda x: ['background: lightblue' if x.name >= len(scale_df) - len(new_items) else '' for _ in x], axis=1))
+            
+            # Apply styling to only new rows
+            styled_df = combined_df.style.apply(
+                lambda x: ['background-color: lightblue' if x.name >= num_existing_rows else '' for _ in x], axis=1)
+            st.dataframe(styled_df)
+
