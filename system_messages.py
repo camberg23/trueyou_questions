@@ -1,4 +1,4 @@
-new_questions_prompt = f"""
+new_questions_prompt = """
 Your job is to help create {N} new questions for the psychometric scale: {scale}. 
 The questions should be varied, accurate, and straightforward in content, using the original questions as inspiration in terms of style and tone. 
 Occasionally include reverse scored items.
