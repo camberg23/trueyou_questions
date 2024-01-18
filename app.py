@@ -32,10 +32,10 @@ if st.button("Generate New Questions"):
         scale_df = df[df['Scale Name'] == scale]
 
         # Create a sophisticated prompt for the LLM
-        prompt = f"Create new questions for the scale: {scale}. Existing items:\n{scale_df.to_string(index=False)}"
+        prompt = f"Create five new questions for the scale: {scale}. Existing items:\n{scale_df.to_string(index=False)}"
         chat_chain = LLMChain(prompt=PromptTemplate.from_template(prompt), llm=chat_model)
         generated_questions = chat_chain.run(scale=scale)  # Adjust parameters based on your LLM setup
-
+        st.write(generated_questions)
         # Process the generated questions
         new_items = []
         for question in generated_questions.split('\n'):
