@@ -11,7 +11,7 @@ from system_messages import *
 chat_model = ChatOpenAI(openai_api_key=st.secrets['API_KEY'], model_name='gpt-4-1106-preview', temperature=0.2, max_tokens=4096)
 
 # Streamlit UI
-st.title("TypeFinder Blog Post Generator")
+st.title("Question Generator for TrueYou app")
 
 # Title input
 st.write("**This tool will generate blogs for all 16 TypeFinder types given a fixed topic.** When you write your title, **use the placeholder 'Xs'** for where the types (eg, INTPs, ENFJs) will go.")
