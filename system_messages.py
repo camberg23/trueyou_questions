@@ -10,9 +10,9 @@ Format each new question as follows, with each field separated by a '|' and each
 'Category'|'Scale Name'|'Scale #'|'Scale Key'|'Item Text'|'Session'|'Trait Key'|'Reverse'
 
 Example:
-'A'|'Accommodating'|1|'A1'|'new question text 1'|0|'accommodating'|False
-'A'|'Accommodating'|1|'A1'|'new question text 2'|0|'accommodating'|False
-'A'|'Accommodating'|1|'A1'|'new question text 3'|0|'accommodating'|True
+'A'|'Accommodating'|1|'A1'|'new question text 1'| |'accommodating'|False
+'A'|'Accommodating'|1|'A1'|'new question text 2'| |'accommodating'|False
+'A'|'Accommodating'|1|'A1'|'new question text 3'| |'accommodating'|True
 
-Please provide {N} new questions in this EXACT format.
+Please provide {N} new questions in this EXACT format (for now, please just leave the 'Session' column blank as shown above!).
 """
