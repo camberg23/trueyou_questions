@@ -33,7 +33,7 @@ if st.button("Generate New Questions"):
         # Assuming you have a predefined prompt template for question generation
         prompt = f"Generate a new question for the scale: {scale}"
         chat_chain = LLMChain(prompt=PromptTemplate.from_template(prompt), llm=chat_model)
-        generated_question = chat_chain.run()  # You might need to adjust the parameters based on your LLM setup
+        generated_question = chat_chain.run(scale=scale)  # You might need to adjust the parameters based on your LLM setup
 
         # Add the new question to the dataframe
         new_row = {
