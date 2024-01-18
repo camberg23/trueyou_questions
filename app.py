@@ -31,18 +31,21 @@ if st.button("Generate New Questions"):
         # Filter dataframe for the selected scale
         scale_df = df[df['Scale Name'] == scale]
 
-        # Create a sophisticated prompt for the LLM
-        prompt = f"Create five new questions for the scale: {scale}. Existing items:\n{scale_df.to_string(index=False)} ENSURE YOUR OUTPUTS ARE IN THIS EXACT FORMAT!"
+        # Create a sophisticated prompt for the LLM with explicit formatting instructions
+        prompt = (f"Create new questions for the scale: {scale}. "
+                  "Format each question as a separate line, using '|' as a delimiter between fields. "
+                  "Existing items:\n{scale_df.to_string(index=False)}")
         chat_chain = LLMChain(prompt=PromptTemplate.from_template(prompt), llm=chat_model)
-        generated_questions = chat_chain.run(scale=scale)  # Adjust parameters based on your LLM setup
-        st.write(generated_questions)
+        generated_output = chat_chain.run(scale=scale)  # Adjust parameters based on your LLM setup
+
+        st.write(generated_output)  # To inspect the output format
+
         # Process the generated questions
         new_items = []
-        for question in generated_questions.split('\n'):
-            # Assuming the output format matches the input format
-            values = question.split(',')
+        for question in generated_output.split('\n'):
+            values = question.split('|')  # Split by the pipe delimiter
             if len(values) == len(df.columns):
-                new_row = {col: val for col, val in zip(df.columns, values)}
+                new_row = {col: val.strip() for col, val in zip(df.columns, values)}
                 new_row['Session'] = ''  # Leave 'Session' column blank
                 scale_df = scale_df.append(new_row, ignore_index=True)
                 new_items.append(new_row)
@@ -50,5 +53,3 @@ if st.button("Generate New Questions"):
         # Display the updated table for the scale
         st.write(f"Updated Scale Questions for {scale}:")
         st.dataframe(scale_df.style.apply(lambda x: ['background: lightblue' if x.name in range(len(scale_df)-len(new_items), len(scale_df)) else '' for i in x], axis=1))
-
-# Additional code for saving, downloading, etc., as required
