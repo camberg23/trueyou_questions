@@ -30,12 +30,7 @@ if st.button("Generate New Questions"):
     for scale in selected_scales:
         # Filter dataframe for the selected scale
         scale_df = df[df['Scale Name'] == scale]
-
-        # Create a sophisticated prompt for the LLM with explicit formatting instructions
-        prompt = (f"Create new questions for the scale: {scale}. "
-                  "Format each question as a separate line, using '|' as a delimiter between fields. "
-                  "Existing items:\n{scale_df.to_string(index=False)}")
-        chat_chain = LLMChain(prompt=PromptTemplate.from_template(prompt), llm=chat_model)
+        chat_chain = LLMChain(prompt=PromptTemplate.from_template(new_questions_prompt), llm=chat_model)
         generated_output = chat_chain.run(scale=scale)  # Adjust parameters based on your LLM setup
 
         st.write(generated_output)  # To inspect the output format
