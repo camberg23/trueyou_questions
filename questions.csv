@@ -1,0 +1,217 @@
+Cat,Scale Name,Scale #,Scale Key,Item Text,Session,Trait Key,Reverse
+A,Accommodating,1,A1,I try to avoid conflict,0,accommodating,FALSE
+A,Accommodating,1,A1,"I avoid arguing, even when I disagree",0,accommodating,FALSE
+A,Accommodating,1,A1,I enjoy a good debate,0,accommodating,TRUE
+A,Accommodating,1,A1,I feel uncomfortable when I disagree with someone,0,accommodating,FALSE
+A,Accommodating,1,A1,I am good at compromising when others have strong opinions,0,accommodating,FALSE
+A,Accommodating,1,A1,I am not willing to compromise my opinions for anyone,0,accommodating,TRUE
+A,Compassionate,2,A2,I think about the needs of others,2,compassionate,FALSE
+A,Compassionate,2,A2,I enjoy being there for people when they are feeling sad,2,compassionate,FALSE
+A,Compassionate,2,A2,I like to help others with their personal problems,2,compassionate,FALSE
+A,Compassionate,2,A2,I am sensitive to the feelings of others,4,compassionate,FALSE
+A,Compassionate,2,A2,I am concerned about others,4,compassionate,FALSE
+A,Compassionate,2,A2,I let others know that I care about their feelings,4,compassionate,FALSE
+A,Modest,3,A3,I make more significant contributions than the average person,8,modest,TRUE
+A,Modest,3,A3,The groups I belong to would not function well without me,8,modest,TRUE
+A,Modest,3,A3,"If I am honest, I feel that I am a bit better than other people",8,modest,TRUE
+A,Modest,3,A3,I am an important member of my social groups,9,modest,TRUE
+A,Modest,3,A3,I make important contributions to my community,9,modest,TRUE
+A,Modest,3,A3,I consider myself an average person,9,modest,FALSE
+A,Altruistic,4,A4,I sympathize with people who are homeless,11,altruistic,FALSE
+A,Altruistic,4,A4,I am helpful to the people around me,12,altruistic,FALSE
+A,Altruistic,4,A4,I am concerned for the wellbeing of elderly people,13,altruistic,FALSE
+A,Altruistic,4,A4,I take care of myself before helping others,14,altruistic,TRUE
+A,Altruistic,4,A4,It is important to me to take care of other people,14,altruistic,FALSE
+A,Altruistic,4,A4,I look for ways to help others,15,altruistic,FALSE
+A,Trusting,5,A5,I believe that others have good intentions,0,trusting,FALSE
+A,Trusting,5,A5,I trust what people say,0,trusting,FALSE
+A,Trusting,5,A5,I often think people have hidden motives for their actions,0,trusting,TRUE
+A,Trusting,5,A5,I believe that people are basically good,0,trusting,FALSE
+A,Trusting,5,A5,I am suspicious of people that I am just getting to know,0,trusting,TRUE
+A,Trusting,5,A5,I do not trust many people,0,trusting,TRUE
+A,Eager,6,A6,I like to be needed by other people,3,eager,FALSE
+A,Eager,6,A6,I work hard to please others,3,eager,FALSE
+A,Eager,6,A6,I need approval from other people,3,eager,FALSE
+A,Eager,6,A6,It is important to me that other people like me,4,eager,FALSE
+A,Eager,6,A6,I can't stand when someone doesn't like me,4,eager,FALSE
+A,Eager,6,A6,I try my best to be a likeable person,4,eager,FALSE
+A,Cooperative,7,A7,"I enjoy working together with others, toward a common goal",0,cooperative,FALSE
+A,Cooperative,7,A7,Competing with other people is motivating to me,0,cooperative,TRUE
+A,Cooperative,7,A7,I feel discouraged if I am not supported by the people around me,0,cooperative,FALSE
+A,Cooperative,7,A7,I dislike being in competition with others,0,cooperative,FALSE
+A,Cooperative,7,A7,I try harder when I am in competition with other people,0,cooperative,TRUE
+A,Cooperative,7,A7,I like to share goals and plans with other people,0,cooperative,FALSE
+A,Honest,8,A8,I tell little white lies when the truth is too difficult,0,honest,TRUE
+A,Honest,8,A8,I am known to tell people what they want to hear,0,honest,TRUE
+A,Honest,8,A8,I sometimes bend the truth to keep myself out of trouble,0,honest,TRUE
+A,Honest,8,A8,"I am always honest, even when the truth is hard to hear",0,honest,FALSE
+A,Honest,8,A8,"I believe people deserve the truth, even if it’s upsetting",0,honest,FALSE
+A,Honest,8,A8,I am honest about my mistakes and shortcomings,0,honest,FALSE
+O,Theoretical,1,O1,I enjoy trying to understand complicated ideas,1,theoretical,FALSE
+O,Theoretical,1,O1,I enjoy talking about philosophy,1,theoretical,FALSE
+O,Theoretical,1,O1,I like thinking about the mysteries of the universe,1,theoretical,FALSE
+O,Theoretical,1,O1,I enjoy learning about scientific theories,2,theoretical,FALSE
+O,Theoretical,1,O1,I would prefer to come up with an original solution to a problem,2,theoretical,FALSE
+O,Theoretical,1,O1,I am full of new ideas,2,theoretical,FALSE
+O,Imaginative,2,O2,I have a vivid imagination,9,imaginative,FALSE
+O,Imaginative,2,O2,I have a rich fantasy life,9,imaginative,FALSE
+O,Imaginative,2,O2,I enjoy imagining the future,9,imaginative,FALSE
+O,Imaginative,2,O2,I am more interested in reality than possibilities,11,imaginative,TRUE
+O,Imaginative,2,O2,I am bored by fantasy and things that aren’t real,11,imaginative,TRUE
+O,Imaginative,2,O2,My imagination is more exciting than the real world,11,imaginative,FALSE
+O,Curious,3,O3,I think about why people do the things they do,12,curious,FALSE
+O,Curious,3,O3,It is important to me to understand the bigger picture,13,curious,FALSE
+O,Curious,3,O3,I spend time trying to understand myself,13,curious,FALSE
+O,Curious,3,O3,I wonder why I am the way I am,14,curious,FALSE
+O,Curious,3,O3,I enjoy examining myself and my life,14,curious,FALSE
+O,Curious,3,O3,I question why things are the way they are,15,curious,FALSE
+O,Progressive,4,O4,I enjoy following tradition,0,progressive,TRUE
+O,Progressive,4,O4,I trust the wisdom of my elders,0,progressive,TRUE
+O,Progressive,4,O4,I believe in traditional values,0,progressive,TRUE
+O,Progressive,4,O4,I believe that there is no absolute right or wrong,0,progressive,FALSE
+O,Progressive,4,O4,I prefer politicians who seek a return to traditional ways,0,progressive,TRUE
+O,Progressive,4,O4,Our society needs new ideas to make positive change,0,progressive,FALSE
+O,Artistic,5,O5,I like to visit art museums,0,artistic,FALSE
+O,Artistic,5,O5,I appreciate the beauty of nature,0,artistic,FALSE
+O,Artistic,5,O5,I do not see the point of poetry,0,artistic,TRUE
+O,Artistic,5,O5,Our society should support artists and their work,0,artistic,FALSE
+O,Artistic,5,O5,I enjoy listening to music,0,artistic,FALSE
+O,Artistic,5,O5,I see the beauty in everyday life,0,artistic,FALSE
+O,Emotive,6,O6,I experience my emotions intensely,15,emotive,FALSE
+O,Emotive,6,O6,I rarely have strong emotions,16,emotive,TRUE
+O,Emotive,6,O6,I feel my emotions very deeply,16,emotive,FALSE
+O,Emotive,6,O6,I can describe my emotions in a lot of depth and detail,17,emotive,FALSE
+O,Emotive,6,O6,I rarely notice my emotional reactions,17,emotive,TRUE
+O,Emotive,6,O6,I often feel overwhelmed by my emotions,18,emotive,FALSE
+O,Unique,7,O7,I have a sense that other people will never really understand me,1,unique,FALSE
+O,Unique,7,O7,I have always felt different from other people,1,unique,FALSE
+O,Unique,7,O7,I am an unusual person,1,unique,FALSE
+O,Unique,7,O7,I often feel like an outsider,3,unique,FALSE
+O,Unique,7,O7,I feel I never truly belong in social groups,3,unique,FALSE
+O,Unique,7,O7,Most people cannot relate to a person like me,3,unique,FALSE
+O,Adventurous,8,O8,I like trying out new hobbies,6,adventurous,FALSE
+O,Adventurous,8,O8,I spend time seeking out new experiences,6,adventurous,FALSE
+O,Adventurous,8,O8,"I like to do things differently, even if I am not sure it will work",6,adventurous,FALSE
+O,Adventurous,8,O8,I’d rather do something familiar than try something new,6,adventurous,TRUE
+O,Adventurous,8,O8,I do not like to try new things,6,adventurous,TRUE
+O,Adventurous,8,O8,I am known as a person who will try anything once,6,adventurous,FALSE
+E,Excitable,1,E1,I avoid being alone,5,excitable,FALSE
+E,Excitable,1,E1,I like to spend my free time alone,5,excitable,TRUE
+E,Excitable,1,E1,I avoid large crowds,5,excitable,TRUE
+E,Excitable,1,E1,I prefer quiet surroundings,6,excitable,TRUE
+E,Excitable,1,E1,I like to be in the middle of the action,6,excitable,FALSE
+E,Excitable,1,E1,I find it fun to be in a big crowd of people,6,excitable,FALSE
+E,Gregarious,2,E2,I enjoy being the center of attention,7,gregarious,FALSE
+E,Gregarious,2,E2,I would enjoy attending a large party in my honor,7,gregarious,FALSE
+E,Gregarious,2,E2,I try not to draw attention to myself,7,gregarious,TRUE
+E,Gregarious,2,E2,I make an effort to be popular,8,gregarious,FALSE
+E,Gregarious,2,E2,Being around lots of people energizes me,8,gregarious,FALSE
+E,Gregarious,2,E2,I am selective about who I spend time with,8,gregarious,TRUE
+E,Expressive,3,E3,I let other people know what I think,9,expressive,FALSE
+E,Expressive,3,E3,I have little to say,9,expressive,FALSE
+E,Expressive,3,E3,I find it difficult to express my opinions,9,expressive,FALSE
+E,Expressive,3,E3,I hold back my opinions,10,expressive,FALSE
+E,Expressive,3,E3,People tell me I am too quiet,10,expressive,FALSE
+E,Expressive,3,E3,I keep my thoughts to myself,10,expressive,FALSE
+E,Joyful,4,E4,I love life,11,joyful,FALSE
+E,Joyful,4,E4,I have a lot of fun,11,joyful,FALSE
+E,Joyful,4,E4,I feel very happy,11,joyful,FALSE
+E,Joyful,4,E4,I have a zest for life,12,joyful,FALSE
+E,Joyful,4,E4,I often feel enthusiastic,12,joyful,FALSE
+E,Joyful,4,E4,I get excited when good things happen,12,joyful,FALSE
+E,Friendly,5,E5,I enjoy chatting with people I’ve just met,0,friendly,FALSE
+E,Friendly,5,E5,It is easy for me to talk to strangers,0,friendly,FALSE
+E,Friendly,5,E5,I find it exciting to meet new people,0,friendly,FALSE
+E,Friendly,5,E5,I love to make new friends,0,friendly,FALSE
+E,Friendly,5,E5,I find it challenging to make new friends,0,friendly,TRUE
+E,Friendly,5,E5,I start conversations,0,friendly,FALSE
+E,Dominant,6,E6,I am a natural leader,0,dominant,FALSE
+E,Dominant,6,E6,I tend to push others towards decisions and action,0,dominant,FALSE
+E,Dominant,6,E6,I talk more than I listen,0,dominant,FALSE
+E,Dominant,6,E6,I enjoy being in a position of power,0,dominant,FALSE
+E,Dominant,6,E6,I speak more loudly than other people,0,dominant,FALSE
+E,Dominant,6,E6,Other people often look to me for direction,0,dominant,FALSE
+E,Energetic,7,E7,I have a lot of energy,0,energetic,FALSE
+E,Energetic,7,E7,I like to stay active,0,energetic,FALSE
+E,Energetic,7,E7,I am always on the go,0,energetic,FALSE
+E,Energetic,7,E7,I do not like to sit still for long,0,energetic,FALSE
+E,Energetic,7,E7,I keep myself busy,0,energetic,FALSE
+E,Energetic,7,E7,I have energy for many activities,0,energetic,FALSE
+C,Planned,1,C1,I prefer to follow a schedule,4,planned,FALSE
+C,Planned,1,C1,I would rather go with the flow than have a set schedule,4,planned,TRUE
+C,Planned,1,C1,I make plans and stick to them,4,planned,FALSE
+C,Planned,1,C1,I enjoy having a daily routine,5,planned,FALSE
+C,Planned,1,C1,I like to have a plan before starting a task,5,planned,FALSE
+C,Planned,1,C1,I dislike making last-minute changes to my schedule,5,planned,FALSE
+C,Orderly,2,C2,I lose my belongings,7,orderly,TRUE
+C,Orderly,2,C2,I keep my belongings in their proper place,7,orderly,FALSE
+C,Orderly,2,C2,I like to tidy up,7,orderly,FALSE
+C,Orderly,2,C2,I am not bothered by disorder,9,orderly,TRUE
+C,Orderly,2,C2,I am often disorganized,9,orderly,TRUE
+C,Orderly,2,C2,I am often unsure of where I have put things,9,orderly,TRUE
+C,Dutiful,3,C3,I make sure my work is finished on time,10,dutiful,FALSE
+C,Dutiful,3,C3,I am very attentive to deadlines,10,dutiful,FALSE
+C,Dutiful,3,C3,I finish assignments before they are due,10,dutiful,FALSE
+C,Dutiful,3,C3,"I start tasks in advance, so that I have plenty of time to finish",12,dutiful,FALSE
+C,Dutiful,3,C3,I have trouble sticking to a routine,12,dutiful,TRUE
+C,Dutiful,3,C3,I like to finish all my chores before I do something fun,12,dutiful,FALSE
+C,Self-disciplined,4,C4,I have trouble controlling my impulses,0,disciplined,TRUE
+C,Self-disciplined,4,C4,I am very good at resisting temptation,0,disciplined,FALSE
+C,Self-disciplined,4,C4,I am easily distracted,0,disciplined,TRUE
+C,Self-disciplined,4,C4,I have a lot of willpower,0,disciplined,FALSE
+C,Self-disciplined,4,C4,I often get sidetracked from my goals and plans,0,disciplined,TRUE
+C,Self-disciplined,4,C4,I use my time productively,0,disciplined,FALSE
+C,Ambitious,5,C5,I work hard,0,ambitious,FALSE
+C,Ambitious,5,C5,I set high standards for myself and others,0,ambitious,FALSE
+C,Ambitious,5,C5,I am highly motivated to succeed,0,ambitious,FALSE
+C,Ambitious,5,C5,I do more than what's expected of me,1,ambitious,FALSE
+C,Ambitious,5,C5,I am determined to achieve success in life,1,ambitious,FALSE
+C,Ambitious,5,C5,I do just enough work to get by,1,ambitious,TRUE
+C,Cautious,6,C6,I jump into things without thinking,0,cautious,TRUE
+C,Cautious,6,C6,I make rash decisions,0,cautious,TRUE
+C,Cautious,6,C6,I often act on a whim,0,cautious,TRUE
+C,Cautious,6,C6,I think decisions through carefully,0,cautious,FALSE
+C,Cautious,6,C6,I am careful about avoiding mistakes and errors,0,cautious,FALSE
+C,Cautious,6,C6,I always think about the consequences before making a decision,0,cautious,FALSE
+C,Effective,7,C7,I am a person who gets things done,0,effective,FALSE
+C,Effective,7,C7,I am a competent person,0,effective,FALSE
+C,Effective,7,C7,"When I take on a task, I complete it successfully",0,effective,FALSE
+C,Effective,7,C7,I am good at what I do,0,effective,FALSE
+C,Effective,7,C7,"Many times, I am not able to do what is expected of me",0,effective,TRUE
+C,Effective,7,C7,I often fumble important tasks,0,effective,TRUE
+R,Stress Tolerance,1,R1,I remain calm even in stressful situations,0,hardy,FALSE
+R,Stress Tolerance,1,R1,I have effective ways of dealing with stress,0,hardy,FALSE
+R,Stress Tolerance,1,R1,I am calm under pressure,0,hardy,FALSE
+R,Stress Tolerance,1,R1,I push through when things get difficult,0,hardy,FALSE
+R,Stress Tolerance,1,R1,I am not afraid to face difficult problems,0,hardy,FALSE
+R,Stress Tolerance,1,R1,I am often overwhelmed by my problems,0,hardy,TRUE
+R,Fearless,2,R2,I am relaxed most of the time,4,fearless,FALSE
+R,Fearless,2,R2,I don't worry about things that have already happened,4,fearless,FALSE
+R,Fearless,2,R2,I am afraid of many things,4,fearless,TRUE
+R,Fearless,2,R2,I worry about things,5,fearless,TRUE
+R,Fearless,2,R2,I fear for the worst,5,fearless,TRUE
+R,Fearless,2,R2,I am not easily bothered by things,5,fearless,FALSE
+R,Cheerful,3,R3,I am often down in the dumps,7,cheerful,TRUE
+R,Cheerful,3,R3,I have mood swings,7,cheerful,TRUE
+R,Cheerful,3,R3,I am not easily discouraged,7,cheerful,FALSE
+R,Cheerful,3,R3,I tend to feel blue,8,cheerful,TRUE
+R,Cheerful,3,R3,I often feel unmotivated,8,cheerful,TRUE
+R,Cheerful,3,R3,I rarely feel sad,8,cheerful,FALSE
+R,Self-assured,4,R4,I am afraid to draw attention to myself,10,selfassured,TRUE
+R,Self-assured,4,R4,I only feel comfortable with friends,10,selfassured,TRUE
+R,Self-assured,4,R4,I am not embarrassed easily,10,selfassured,FALSE
+R,Self-assured,4,R4,I am afraid that I will do the wrong thing,11,selfassured,TRUE
+R,Self-assured,4,R4,I am not bothered by difficult social situations,11,selfassured,FALSE
+R,Self-assured,4,R4,I am easily intimidated,11,selfassured,TRUE
+R,Even-Tempered,5,R5,I am known to lose my temper,0,tempered,TRUE
+R,Even-Tempered,5,R5,I am not easily aggravated,0,tempered,FALSE
+R,Even-Tempered,5,R5,I am often irritable,0,tempered,TRUE
+R,Even-Tempered,5,R5,"When someone annoys me, I let them have it",0,tempered,TRUE
+R,Even-Tempered,5,R5,I show my anger to get other people to back down,0,tempered,TRUE
+R,Even-Tempered,5,R5,I keep my cool when I am in a conflict,0,tempered,FALSE
+R,Optimistic,6,R6,I see the positive in every situation,2,optimistic,FALSE
+R,Optimistic,6,R6,I am good at seeing the bright side of things when others complain,2,optimistic,FALSE
+R,Optimistic,6,R6,I tend to be more optimistic than most people,2,optimistic,FALSE
+R,Optimistic,6,R6,I believe that things usually work out for the best,3,optimistic,FALSE
+R,Optimistic,6,R6,I am an upbeat person,3,optimistic,FALSE
+R,Optimistic,6,R6,I feel good about the future,3,optimistic,FALSE
