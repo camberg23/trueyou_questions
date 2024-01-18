@@ -12,7 +12,7 @@ from system_messages import *
 chat_model = ChatOpenAI(openai_api_key=st.secrets['API_KEY'], model_name='gpt-4-1106-preview', temperature=0.2, max_tokens=4096)
 
 # Load the CSV file
-file_path = 'path_to_your_csv.csv'
+file_path = 'questions.csv'
 df = pd.read_csv(file_path)
 
 # Streamlit UI setup
