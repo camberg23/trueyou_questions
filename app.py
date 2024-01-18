@@ -17,21 +17,26 @@ df = pd.read_csv(file_path)
 # Streamlit UI setup
 st.title("Scale Question Generator")
 
-# Display the existing table
-st.write("Current Scale Questions:")
-st.dataframe(df)
+# Expander for the current scale questions table
+with st.expander("Click here to see all current scale questions"):
+    st.dataframe(df)
 
-# Modify Multiselect to show 'Scale (Cat)'
-scale_options = [f"{row['Scale Name']} ({row['Cat']})" for _, row in df.drop_duplicates(['Scale Name', 'Cat']).iterrows()]
-selected_scales = st.multiselect("Select scales to generate questions for:", scale_options)
+# Layout with two columns
+col1, col2 = st.columns([3, 1])
 
-# Allow user to specify the number of new questions
-N = st.number_input("Number of new questions to generate for each scale:", min_value=1, max_value=25, value=5)
+# Column for scale selection
+with col1:
+    scale_options = [f"{row['Scale Name']} ({row['Cat']})" for _, row in df.drop_duplicates(['Scale Name', 'Cat']).iterrows()]
+    selected_scales = st.multiselect("Select scales to generate questions for:", scale_options)
+
+# Column for specifying the number of new questions
+with col2:
+    N = st.number_input("Number of new questions:", min_value=1, max_value=25, value=5)
 
 # Button to generate new questions
 if st.button("Generate New Questions"):
     for scale_option in selected_scales:
-        scale, _ = scale_option.split(' (')
+        scale, cat = scale_option.split(' (')
         scale_df = df[df['Scale Name'] == scale].copy()
 
         chat_chain = LLMChain(prompt=PromptTemplate.from_template(new_questions_prompt), llm=chat_model)
@@ -55,10 +60,10 @@ if st.button("Generate New Questions"):
             # Determine the rows to apply the styling
             num_existing_rows = len(scale_df)
             
-            # Enhanced display of updated scale questions
-            st.markdown(f"### Updated Scale Questions for {scale}")
+            # Enhanced display of updated scale questions with category
+            st.markdown(f"### Updated Scale Questions for {scale} ({cat.strip(')')})")
             
             # Apply styling to only new rows
             styled_df = combined_df.style.apply(
-                lambda x: ['background-color: lightblue' if x.name >= num_existing_rows else '' for _ in x], axis=1)
+                lambda x: ['background-color: lightgreen' if x.name >= num_existing_rows else '' for _ in x], axis=1)
             st.dataframe(styled_df)
