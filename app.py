@@ -15,7 +15,7 @@ file_path = 'questions.csv'
 df = pd.read_csv(file_path)
 
 # Streamlit UI setup
-st.title("Scale Question Generator")
+st.title("TrueYou Question Generator")
 
 # Expander for the current scale questions table
 with st.expander("Click here to see all current scale questions"):
