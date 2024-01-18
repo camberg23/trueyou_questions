@@ -21,14 +21,17 @@ st.title("Scale Question Generator")
 st.write("Current Scale Questions:")
 st.dataframe(df)
 
-# Scale selection for generating new questions
-scale_options = df['Scale Name'].unique()
+# Modify Multiselect to show 'Scale (Cat)'
+scale_options = [f"{row['Scale Name']} ({row['Cat']})" for _, row in df.drop_duplicates(['Scale Name', 'Cat']).iterrows()]
 selected_scales = st.multiselect("Select scales to generate questions for:", scale_options)
-N = 5
+
+# Allow user to specify the number of new questions
+N = st.number_input("Number of new questions to generate for each scale:", min_value=1, max_value=25, value=5)
+
 # Button to generate new questions
 if st.button("Generate New Questions"):
-    for scale in selected_scales:
-        # Filter dataframe for the selected scale
+    for scale_option in selected_scales:
+        scale, _ = scale_option.split(' (')
         scale_df = df[df['Scale Name'] == scale].copy()
 
         chat_chain = LLMChain(prompt=PromptTemplate.from_template(new_questions_prompt), llm=chat_model)
@@ -51,10 +54,11 @@ if st.button("Generate New Questions"):
             
             # Determine the rows to apply the styling
             num_existing_rows = len(scale_df)
-            st.write(f"Updated Scale Questions for {scale}:")
+            
+            # Enhanced display of updated scale questions
+            st.markdown(f"### Updated Scale Questions for {scale}")
             
             # Apply styling to only new rows
             styled_df = combined_df.style.apply(
                 lambda x: ['background-color: lightblue' if x.name >= num_existing_rows else '' for _ in x], axis=1)
             st.dataframe(styled_df)
-
