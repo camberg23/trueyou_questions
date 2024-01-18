@@ -37,13 +37,11 @@ if st.button("Generate New Questions"):
 
         # Process the generated questions
         new_items = []
-        for question in generated_output.split(' A|'):  # Split by the delimiter
-            if question.strip():  # Check if the line is not empty
-                values = ['A'] + question.split('|')  # Add 'A' back to each item and split
-                if len(values) == len(df.columns):
-                    new_row = {col: val.strip() for col, val in zip(df.columns, values)}
-                    new_row['Session'] = ''  # Leave 'Session' column blank
-                    new_items.append(new_row)
+        for question in generated_output.split('\n'):
+            values = question.split('|')
+            if len(values) == len(df.columns):
+                new_row = {col: val.strip().strip("'") for col, val in zip(df.columns, values)}
+                new_items.append(new_row)
 
         # Append new items to the scale DataFrame and apply styling
         if new_items:
