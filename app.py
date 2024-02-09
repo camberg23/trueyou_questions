@@ -152,7 +152,7 @@ if not st.session_state['proposed_changes'].empty:
         st.session_state['df'] = updated_df
         st.session_state['proposed_changes'] = pd.DataFrame()  # Clear proposed changes
         st.success("Changes have been integrated successfully!")
-        st.dataframe(st.session_state['df'])
+        st.rerun()
 
     elif discard_button:
         # Clear proposed changes without integrating
