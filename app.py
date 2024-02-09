@@ -231,6 +231,8 @@ if not st.session_state['proposed_questions'].empty:
         st.session_state['proposed_questions'] = pd.DataFrame()
         st.info("Proposed questions have been discarded.")
 
+st.markdown("")
+st.markdown("")
     
 if not st.session_state['df'].empty:
     csv = st.session_state['df'].to_csv(index=False).encode('utf-8')
