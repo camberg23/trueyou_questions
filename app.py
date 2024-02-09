@@ -50,7 +50,7 @@ with st.form("new_scale_form"):
         # For now, let's simulate `generated_output` as a string for demonstration
         st.write(generated_output)  # Uncomment this line to debug and see the raw output
         
-        # Assuming `generated_output` is structured similarly to how questions were generated previously
+        # Process the generated scales or questions
         new_items = []
         for scale_info in generated_output.split('\n'):
             values = scale_info.split('|')
@@ -60,16 +60,22 @@ with st.form("new_scale_form"):
 
         if new_items:
             new_items_df = pd.DataFrame(new_items)
-            combined_df = pd.concat([df, new_items_df], ignore_index=True)
             
-            # Enhanced display of updated scales
-            st.markdown(f"### Newly Generated Scales for {selected_cat}")
+            # Create a subset of the original dataframe that includes only items from the selected category
+            cat_subset_df = df[df['Cat'] == selected_cat_key].copy()
+            
+            # Combine the new items with this subset
+            combined_df = pd.concat([cat_subset_df, new_items_df], ignore_index=True)
+            
+            # Display updated scales/questions for the selected category
+            st.markdown(f"### Newly Generated Scales/Questions for {selected_cat}")
             
             # Apply styling to only new rows
-            num_existing_rows = len(df)
-            styled_df = combined_df.style.apply(lambda x: ['background-color: lightgreen' if x.name >= num_existing_rows else '' for _ in x], axis=1)
+            num_existing_rows = len(cat_subset_df)
+            styled_df = combined_df.style.apply(
+                lambda x: ['background-color: lightgreen' if x.name >= num_existing_rows else '' for _ in x], axis=1)
             st.dataframe(styled_df)
-            
+
 # Layout with two columns (existing functionality for generating new questions within a scale)
 col1, col2 = st.columns([3, 1])
 
