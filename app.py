@@ -95,6 +95,9 @@ if 'df' not in st.session_state:
     df_initial = pd.read_csv(file_path)
     st.session_state['df'] = df_initial
 
+if 'proposed_changes' not in st.session_state:
+    st.session_state['proposed_changes'] = pd.DataFrame()
+
 st.dataframe(st.session_state['df'])
 
 # Streamlit UI setup
@@ -135,26 +138,27 @@ if submit_button:
             new_items.append(new_row)
 
     if new_items:
-        new_items_df = pd.DataFrame(new_items)
-        
-        # Display proposed changes to the user
+        # Store proposed changes in the session state
+        st.session_state['proposed_changes'] = pd.DataFrame(new_items)
         st.markdown("### Proposed Changes")
-        st.dataframe(new_items_df)
-        
-        # Ask the user for confirmation to integrate these changes
-        confirm_button = st.button("Confirm and Integrate Changes", key="confirm_new_scale")
-        discard_button = st.button("Discard Changes", key="discard_new_scale")
+        st.dataframe(st.session_state['proposed_changes'])
 
-        if confirm_button:
-            # Combine the new items with the current DataFrame in session state
-            updated_df = pd.concat([st.session_state['df'], new_items_df], ignore_index=True)
-            st.session_state['df'] = updated_df
-            # st.success("Changes have been integrated successfully!")
-            # st.rerun()
-            st.dataframe(st.session_state['df'])
+# Display buttons for confirmation only if there are proposed changes
+if not st.session_state['proposed_changes'].empty:
+    confirm_button = st.button("Confirm and Integrate Changes", key="confirm_new_scale")
+    discard_button = st.button("Discard Changes", key="discard_new_scale")
 
-        elif discard_button:
-            st.info("Changes have been discarded.")
+    if confirm_button:
+        # Integrate proposed changes with the main DataFrame
+        updated_df = pd.concat([st.session_state['df'], st.session_state['proposed_changes']], ignore_index=True)
+        st.session_state['df'] = updated_df
+        st.session_state['proposed_changes'] = pd.DataFrame()  # Clear proposed changes
+        st.success("Changes have been integrated successfully!")
+
+    elif discard_button:
+        # Clear proposed changes without integrating
+        st.session_state['proposed_changes'] = pd.DataFrame()
+        st.info("Changes have been discarded.")
 
 # # Layout with two columns (existing functionality for generating new questions within a scale)
 # col1, col2 = st.columns([3, 1])
