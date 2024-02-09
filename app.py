@@ -167,7 +167,9 @@ col1, col2 = st.columns([3, 1])
 
 # Column for scale selection
 with col1:
-    scale_options = [f"{row['Scale Name']} ({row['Cat']})" for _, row in st.session_state['df'].drop_duplicates(['Scale Name', 'Cat']).iterrows()]
+    # Sort the DataFrame by 'Cat' and then 'Scale Name', and generate scale options
+    sorted_df = st.session_state['df'].sort_values(by=['Cat', 'Scale Name'])
+    scale_options = [f"{row['Scale Name']} ({row['Cat']})" for _, row in sorted_df.drop_duplicates(['Scale Name', 'Cat']).iterrows()]
     selected_scales = st.multiselect("Select which scales you'd like to generate new questions for:", scale_options)
 
 # Column for specifying the number of new questions
