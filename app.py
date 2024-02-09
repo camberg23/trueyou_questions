@@ -48,7 +48,7 @@ with st.form("new_scale_form"):
         generated_output = chat_chain.run(TRAIT=selected_cat, SCALE_DETAILS=scale_details, EXISTING_ITEMS=cat_content_df.to_string(index=False))
         
         # For now, let's simulate `generated_output` as a string for demonstration
-        # st.write(generated_output)  # Uncomment this line to debug and see the raw output
+        st.write(generated_output)  # Uncomment this line to debug and see the raw output
         
         # Assuming `generated_output` is structured similarly to how questions were generated previously
         new_items = []
