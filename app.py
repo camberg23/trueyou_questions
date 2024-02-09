@@ -98,6 +98,9 @@ if 'df' not in st.session_state:
 if 'proposed_changes' not in st.session_state:
     st.session_state['proposed_changes'] = pd.DataFrame()
 
+if 'proposed_questions' not in st.session_state:
+    st.session_state['proposed_questions'] = pd.DataFrame()
+
 # Streamlit UI setup
 st.title("TrueYou Question Generator")
 
@@ -158,6 +161,67 @@ if not st.session_state['proposed_changes'].empty:
         # Clear proposed changes without integrating
         st.session_state['proposed_changes'] = pd.DataFrame()
         st.info("Changes have been discarded.")
+
+# Layout with two columns for generating new questions within a scale
+col1, col2 = st.columns([3, 1])
+
+# Column for scale selection
+with col1:
+    scale_options = [f"{row['Scale Name']} ({row['Cat']})" for _, row in st.session_state['df'].drop_duplicates(['Scale Name', 'Cat']).iterrows()]
+    selected_scales = st.multiselect("Select which scales you'd like to generate new questions for:", scale_options)
+
+# Column for specifying the number of new questions
+with col2:
+    N = st.number_input("Number of new questions for each scale:", min_value=1, max_value=25, value=5)
+
+# Button to generate new questions
+if st.button("Generate New Questions"):
+    all_new_items = []  # To hold all new items for all selected scales
+    for scale_option in selected_scales:
+        scale, cat = scale_option.split(' (')
+        cat = cat.rstrip(')')
+        scale_df = st.session_state['df'][st.session_state['df']['Scale Name'] == scale].copy()
+
+        # Your existing LLM logic for generating new questions
+        chat_chain = LLMChain(prompt=PromptTemplate.from_template(new_questions_prompt), llm=chat_model)
+        generated_output = chat_chain.run(N=N, scale=scale, existing_items=scale_df.to_string(index=False))
+
+        # Process the generated questions
+        new_items = []
+        for question in generated_output.split('\n'):
+            values = question.split('|')
+            if len(values) == len(st.session_state['df'].columns):
+                new_row = {col: val.strip().strip("'") for col, val in zip(st.session_state['df'].columns, values)}
+                new_items.append(new_row)
+        if new_items:
+            # Store new items temporarily, keyed by scale name
+            all_new_items.extend(new_items)  # Extend the list with new items for this scale
+
+    if all_new_items:
+        # Update session state with proposed questions for all selected scales
+        st.session_state['proposed_questions'] = pd.DataFrame(all_new_items)
+        
+        # Display proposed changes to the user
+        st.markdown("### Proposed New Questions")
+        st.dataframe(st.session_state['proposed_questions'])
+
+# Display buttons for confirmation only if there are proposed questions
+if not st.session_state['proposed_questions'].empty:
+    confirm_button = st.button("Confirm and Integrate Questions", key="confirm_new_questions")
+    discard_button = st.button("Discard Questions", key="discard_new_questions")
+
+    if confirm_button:
+        # Integrate proposed questions with the main DataFrame
+        updated_df = pd.concat([st.session_state['df'], st.session_state['proposed_questions']], ignore_index=True)
+        st.session_state['df'] = updated_df
+        # Clear proposed questions after integration
+        st.session_state['proposed_questions'] = pd.DataFrame()
+        st.success("New questions have been integrated successfully!")
+
+    elif discard_button:
+        # Clear proposed questions without integrating
+        st.session_state['proposed_questions'] = pd.DataFrame()
+        st.info("Proposed questions have been discarded.")
 
 # # Layout with two columns (existing functionality for generating new questions within a scale)
 # col1, col2 = st.columns([3, 1])
