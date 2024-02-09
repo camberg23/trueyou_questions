@@ -16,3 +16,23 @@ Example:
 
 Please provide {N} new questions in this EXACT format (for now, please just leave the 'Session' column blank as shown above!).
 """
+
+new_scales_prompt = """
+Your job is to help create a new scale that is meaningfully different and additive amongst numerous existing scales as a subset of the Big Five trait, {TRAIT}. 
+The questions should be varied, accurate, and straightforward in content, using the original questions as inspiration in terms of style and tone. 
+Occasionally include reverse scored items.
+
+Here are all the existing items that currently exist under {TRAIT} to use as inspiration both in terms of content and formatting: 
+{existing_items}
+
+Format each new question as follows, with each field separated by a '|' and each question on a new line:
+
+'Category'|'Scale Name'|'Scale #'|'Scale Key'|'Item Text'|'Session'|'Trait Key'|'Reverse'
+
+Example:
+'A'|'Accommodating'|1|'A1'|'new question text 1'| |'accommodating'|False
+'A'|'Accommodating'|1|'A1'|'new question text 2'| |'accommodating'|False
+'A'|'Accommodating'|1|'A1'|'new question text 3'| |'accommodating'|True
+
+Please provide 6 new questions in this EXACT format (please just leave the 'Session' column blank as shown above!).
+"""
