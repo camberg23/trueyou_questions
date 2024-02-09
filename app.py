@@ -98,8 +98,6 @@ if 'df' not in st.session_state:
 if 'proposed_changes' not in st.session_state:
     st.session_state['proposed_changes'] = pd.DataFrame()
 
-st.dataframe(st.session_state['df'])
-
 # Streamlit UI setup
 st.title("TrueYou Question Generator")
 
@@ -154,6 +152,7 @@ if not st.session_state['proposed_changes'].empty:
         st.session_state['df'] = updated_df
         st.session_state['proposed_changes'] = pd.DataFrame()  # Clear proposed changes
         st.success("Changes have been integrated successfully!")
+        st.dataframe(st.session_state['df'])
 
     elif discard_button:
         # Clear proposed changes without integrating
