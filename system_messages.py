@@ -18,9 +18,9 @@ Please provide {N} new questions in this EXACT format (for now, please just leav
 """
 
 new_scales_prompt = """
-Your job is to help create a new scale that is meaningfully different and additive amongst numerous existing scales as a subset of the Big Five trait, {TRAIT}. 
+Your job is to help create ONE SINGLE new scale that is meaningfully different and additive amongst numerous existing scales as a subset of the Big Five trait, {TRAIT}. 
 
-The user may or may not have specified a specific requirement related to the creation of this new scale. If so, it will appear here: 
+The user may or may not have specified a specific requirement related to the creation of this SINGLE new scale. If so, it will appear here: 
 
 {SCALE_DETAILS}
 
@@ -39,5 +39,5 @@ Example:
 'A'|'Accommodating'|1|'A1'|'new question text 2'| |'accommodating'|False
 'A'|'Accommodating'|1|'A1'|'new question text 3'| |'accommodating'|True
 
-Please provide 6 new questions in this EXACT format (please just leave the 'Session' column blank as shown above!).
+Please provide 6 new questions in this EXACT format for the SINGLE new scale (please just leave the 'Session' column blank as shown above!).
 """
