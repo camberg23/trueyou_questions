@@ -87,13 +87,15 @@ from system_messages import *
 # Initialize the chat model with appropriate parameters
 chat_model = ChatOpenAI(openai_api_key=st.secrets['API_KEY'], model_name='gpt-4-1106-preview', temperature=0.2, max_tokens=4096)
 
+st.set_page_config(page_title='TrueYou Question Generator', page_icon=None, layout="wide")
+
 # Initialize the DataFrame in session state if it doesn't exist
 if 'df' not in st.session_state:
     file_path = 'questions.csv'
     df_initial = pd.read_csv(file_path)
     st.session_state['df'] = df_initial
 
-st.set_page_config(page_title='TrueYou Question Generator', page_icon=None, layout="wide")
+st.dataframe(st.session_state['df'])
 
 # Streamlit UI setup
 st.title("TrueYou Question Generator")
@@ -148,7 +150,6 @@ if submit_button:
             updated_df = pd.concat([st.session_state['df'], new_items_df], ignore_index=True)
             st.session_state['df'] = updated_df
             st.success("Changes have been integrated successfully!")
-            st.rerun()
 
         elif discard_button:
             st.info("Changes have been discarded.")
