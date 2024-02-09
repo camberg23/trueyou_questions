@@ -44,7 +44,7 @@ with st.form("new_scale_form"):
         
         # Placeholder for LLM chain (assuming prompt templates and llm initialization are correctly set up)
         # This is where you would actually call the LLM, but for now, we're simulating the output for demonstration.
-        chat_chain = LLMChain(prompt=PromptTemplate.from_template("new_scales_prompt"), llm=chat_model)
+        chat_chain = LLMChain(prompt=PromptTemplate.from_template(new_scales_prompt), llm=chat_model)
         generated_output = chat_chain.run(TRAIT=selected_cat, SCALE_DETAILS=scale_details, EXISTING_ITEMS=cat_content_df.to_string(index=False))
         
         # For now, let's simulate `generated_output` as a string for demonstration
