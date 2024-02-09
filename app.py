@@ -103,7 +103,7 @@ if 'proposed_questions' not in st.session_state:
     st.session_state['proposed_questions'] = pd.DataFrame()
 
 # Streamlit UI setup
-st.title("TrueYou Question Generator")
+st.title("TrueYou Question/Scale Generator")
 
 # Expander for the current scale questions table
 with st.expander("Click here to see all current scales and questions"):
