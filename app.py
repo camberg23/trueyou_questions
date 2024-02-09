@@ -153,43 +153,43 @@ with st.form("new_scale_form"):
             elif discard_button:
                 st.info("Changes have been discarded.")
 
-# Layout with two columns (existing functionality for generating new questions within a scale)
-col1, col2 = st.columns([3, 1])
+# # Layout with two columns (existing functionality for generating new questions within a scale)
+# col1, col2 = st.columns([3, 1])
 
-# Column for scale selection
-with col1:
-    scale_options = [f"{row['Scale Name']} ({row['Cat']})" for _, row in df.drop_duplicates(['Scale Name', 'Cat']).iterrows()]
-    selected_scales = st.multiselect("Select which scales you'd like to generate new questions for:", scale_options)
+# # Column for scale selection
+# with col1:
+#     scale_options = [f"{row['Scale Name']} ({row['Cat']})" for _, row in df.drop_duplicates(['Scale Name', 'Cat']).iterrows()]
+#     selected_scales = st.multiselect("Select which scales you'd like to generate new questions for:", scale_options)
 
-# Column for specifying the number of new questions
-with col2:
-    N = st.number_input("Number of new questions for each scale:", min_value=1, max_value=25, value=5)
+# # Column for specifying the number of new questions
+# with col2:
+#     N = st.number_input("Number of new questions for each scale:", min_value=1, max_value=25, value=5)
 
-# Button to generate new questions
-if st.button("Generate New Questions"):
-    for scale_option in selected_scales:
-        scale, cat = scale_option.split(' (')
-        scale_df = df[df['Scale Name'] == scale].copy()
+# # Button to generate new questions
+# if st.button("Generate New Questions"):
+#     for scale_option in selected_scales:
+#         scale, cat = scale_option.split(' (')
+#         scale_df = df[df['Scale Name'] == scale].copy()
 
-        chat_chain = LLMChain(prompt=PromptTemplate.from_template(new_questions_prompt), llm=chat_model)
-        generated_output = chat_chain.run(N=N, scale=scale, existing_items=scale_df.to_string(index=False))
+#         chat_chain = LLMChain(prompt=PromptTemplate.from_template(new_questions_prompt), llm=chat_model)
+#         generated_output = chat_chain.run(N=N, scale=scale, existing_items=scale_df.to_string(index=False))
 
-        # Process the generated questions
-        new_items = []
-        for question in generated_output.split('\n'):
-            values = question.split('|')
-            if len(values) == len(df.columns):
-                new_row = {col: val.strip().strip("'") for col, val in zip(df.columns, values)}
-                new_items.append(new_row)
+#         # Process the generated questions
+#         new_items = []
+#         for question in generated_output.split('\n'):
+#             values = question.split('|')
+#             if len(values) == len(df.columns):
+#                 new_row = {col: val.strip().strip("'") for col, val in zip(df.columns, values)}
+#                 new_items.append(new_row)
 
-        if new_items:
-            new_items_df = pd.DataFrame(new_items)
-            combined_df = pd.concat([scale_df, new_items_df], ignore_index=True)
+#         if new_items:
+#             new_items_df = pd.DataFrame(new_items)
+#             combined_df = pd.concat([scale_df, new_items_df], ignore_index=True)
             
-            # Enhanced display of updated scale questions with category
-            st.markdown(f"### Updated Scale Questions for {scale} ({cat.strip(')')})")
+#             # Enhanced display of updated scale questions with category
+#             st.markdown(f"### Updated Scale Questions for {scale} ({cat.strip(')')})")
             
-            # Apply styling to only new rows
-            styled_df = combined_df.style.apply(
-                lambda x: ['background-color: lightgreen' if x.name >= num_existing_rows else '' for _ in x], axis=1)
-            st.dataframe(styled_df)
+#             # Apply styling to only new rows
+#             styled_df = combined_df.style.apply(
+#                 lambda x: ['background-color: lightgreen' if x.name >= num_existing_rows else '' for _ in x], axis=1)
+#             st.dataframe(styled_df)
