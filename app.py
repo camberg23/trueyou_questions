@@ -82,6 +82,7 @@ from langchain_community.llms import OpenAI
 from langchain.prompts import PromptTemplate 
 from langchain.chains import LLMChain
 import io
+import base64
 from system_messages import *
 
 # Initialize the chat model with appropriate parameters
@@ -116,7 +117,7 @@ st.markdown("## Generate New Scales")
 st.markdown("Here you can generate entirely new scales from scratch. Select the category and provide any specific details you'd like for the new scale.")
 
 # Use the category dictionary for the dropdown
-selected_cat_key = st.selectbox("Select the category for the new scale:", options=list(cat_dict.keys()), format_func=lambda x: cat_dict[x])
+selected_cat_key = st.selectbox("Select the Big Five trait for the new scale:", options=list(cat_dict.keys()), format_func=lambda x: cat_dict[x])
 selected_cat = cat_dict[selected_cat_key]  # Get the full category name for display and processing
 scale_details = st.text_area("Provide any specific details for the new scale (optional):", "")
 
@@ -161,6 +162,10 @@ if not st.session_state['proposed_changes'].empty:
         # Clear proposed changes without integrating
         st.session_state['proposed_changes'] = pd.DataFrame()
         st.info("Changes have been discarded.")
+
+st.write("---")
+st.markdown("## Generate New Questions")
+st.markdown("Here, you can generate new questions for existing scales.")
 
 # Layout with two columns for generating new questions within a scale
 col1, col2 = st.columns([3, 1])
@@ -225,6 +230,15 @@ if not st.session_state['proposed_questions'].empty:
         # Clear proposed questions without integrating
         st.session_state['proposed_questions'] = pd.DataFrame()
         st.info("Proposed questions have been discarded.")
+
+    
+if not st.session_state['df'].empty:
+    csv = st.session_state['df'].to_csv(index=False).encode('utf-8')
+    st.download_button(
+        label="Download updated questions as a CSV",
+        data=csv,
+        file_name='updated_questions.csv',
+        mime='text/csv')
 
 # # Layout with two columns (existing functionality for generating new questions within a scale)
 # col1, col2 = st.columns([3, 1])
