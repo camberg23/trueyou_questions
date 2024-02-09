@@ -39,5 +39,5 @@ Example:
 'A'|'Accommodating'|1|'A1'|'new question text 2'| |'accommodating'|False
 'A'|'Accommodating'|1|'A1'|'new question text 3'| |'accommodating'|True
 
-Please provide 6 new questions in this EXACT format for the SINGLE new scale (please just leave the 'Session' column blank as shown above!).
+Please provide 6 new questions in this EXACT format for the SINGLE new scale (please just leave the 'Session' column blank as shown above, and PLEASE increment the scale number by one, as these questions will be added on as a new scale).
 """
