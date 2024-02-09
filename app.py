@@ -149,7 +149,8 @@ if submit_button:
             # Combine the new items with the current DataFrame in session state
             updated_df = pd.concat([st.session_state['df'], new_items_df], ignore_index=True)
             st.session_state['df'] = updated_df
-            st.success("Changes have been integrated successfully!")
+            # st.success("Changes have been integrated successfully!")
+            st.rerun()
 
         elif discard_button:
             st.info("Changes have been discarded.")
