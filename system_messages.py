@@ -19,11 +19,16 @@ Please provide {N} new questions in this EXACT format (for now, please just leav
 
 new_scales_prompt = """
 Your job is to help create a new scale that is meaningfully different and additive amongst numerous existing scales as a subset of the Big Five trait, {TRAIT}. 
+
+The user may or may not have specified a specific requirement related to the creation of this new scale. If so, it will appear here: 
+
+{SCALE_DETAILS}
+
 The questions should be varied, accurate, and straightforward in content, using the original questions as inspiration in terms of style and tone. 
 Occasionally include reverse scored items.
 
 Here are all the existing items that currently exist under {TRAIT} to use as inspiration both in terms of content and formatting: 
-{existing_items}
+{EXISTING_ITEMS}
 
 Format each new question as follows, with each field separated by a '|' and each question on a new line:
 
