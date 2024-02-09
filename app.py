@@ -25,24 +25,28 @@ with st.expander("Click here to see all current scales and questions"):
 
 # New functionality for generating new scales
 st.markdown("## Generate New Scales")
-st.markdown("Here you can generate entirely new scales from scratch. Fill in the parameters below to define the characteristics of the scales you want to generate.")
+st.markdown("Here you can generate entirely new scales from scratch. Select the category and provide any specific details you'd like for the new scale.")
 
-# Parameters for new scale generation
-# For simplicity, these are just placeholders. You'll need to adjust them based on the specifics of your application.
+# Getting unique categories from the dataframe
+unique_cats = df['Cat'].unique().tolist()
+
+# Form for new scale generation
 with st.form("new_scale_form"):
-    scale_name_hint = st.text_input("Enter a hint for the scale name (optional):", "")
-    scale_category = st.selectbox("Select the category for the new scale:", ["Category 1", "Category 2", "Category 3"])
-    scale_description = st.text_area("Enter a description for the new scale (optional):", "")
-    number_of_scales = st.number_input("Number of new scales to generate:", min_value=1, max_value=10, value=1)
+    selected_cat = st.selectbox("Select the category for the new scale:", unique_cats)
+    scale_details = st.text_area("Provide any specific details for the new scale (optional):", "")
     
-    # Submit button for the form
-    submit_button = st.form_submit_button("Generate New Scales")
+    submit_button = st.form_submit_button("Prepare New Scale Information")
     
     if submit_button:
-        # Placeholder for scale generation logic
-        st.write("Generating new scales...")
-        # Here you will implement the logic to use the inputs above to generate new scales.
-        # This could involve calling an LLM or another process.
+        # Retrieve full current content for all items in the selected category
+        cat_content_df = df[df['Cat'] == selected_cat]
+        
+        # Displaying the user's inputs and the content of the selected category
+        st.write(f"Selected Category: {selected_cat}")
+        st.write("Specific Details for the New Scale (if provided):")
+        st.write(scale_details)
+        st.write("Current Content for All Items in Selected Category:")
+        st.write(cat_content_df.to_string(index=False))
 
 # Layout with two columns (existing functionality for generating new questions within a scale)
 col1, col2 = st.columns([3, 1])
