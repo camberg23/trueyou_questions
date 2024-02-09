@@ -23,7 +23,28 @@ st.title("TrueYou Question Generator")
 with st.expander("Click here to see all current scales and questions"):
     st.dataframe(df)
 
-# Layout with two columns
+# New functionality for generating new scales
+st.markdown("## Generate New Scales")
+st.markdown("Here you can generate entirely new scales from scratch. Fill in the parameters below to define the characteristics of the scales you want to generate.")
+
+# Parameters for new scale generation
+# For simplicity, these are just placeholders. You'll need to adjust them based on the specifics of your application.
+with st.form("new_scale_form"):
+    scale_name_hint = st.text_input("Enter a hint for the scale name (optional):", "")
+    scale_category = st.selectbox("Select the category for the new scale:", ["Category 1", "Category 2", "Category 3"])
+    scale_description = st.text_area("Enter a description for the new scale (optional):", "")
+    number_of_scales = st.number_input("Number of new scales to generate:", min_value=1, max_value=10, value=1)
+    
+    # Submit button for the form
+    submit_button = st.form_submit_button("Generate New Scales")
+    
+    if submit_button:
+        # Placeholder for scale generation logic
+        st.write("Generating new scales...")
+        # Here you will implement the logic to use the inputs above to generate new scales.
+        # This could involve calling an LLM or another process.
+
+# Layout with two columns (existing functionality for generating new questions within a scale)
 col1, col2 = st.columns([3, 1])
 
 # Column for scale selection
@@ -44,8 +65,6 @@ if st.button("Generate New Questions"):
         chat_chain = LLMChain(prompt=PromptTemplate.from_template(new_questions_prompt), llm=chat_model)
         generated_output = chat_chain.run(N=N, scale=scale, existing_items=scale_df.to_string(index=False))
 
-        # st.write(generated_output)  # To inspect the output format
-
         # Process the generated questions
         new_items = []
         for question in generated_output.split('\n'):
@@ -54,13 +73,9 @@ if st.button("Generate New Questions"):
                 new_row = {col: val.strip().strip("'") for col, val in zip(df.columns, values)}
                 new_items.append(new_row)
 
-        # Append new items to the scale DataFrame and apply styling
         if new_items:
             new_items_df = pd.DataFrame(new_items)
             combined_df = pd.concat([scale_df, new_items_df], ignore_index=True)
-            
-            # Determine the rows to apply the styling
-            num_existing_rows = len(scale_df)
             
             # Enhanced display of updated scale questions with category
             st.markdown(f"### Updated Scale Questions for {scale} ({cat.strip(')')})")
