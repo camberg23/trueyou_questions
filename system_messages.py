@@ -1,6 +1,6 @@
 new_questions_prompt = """
 Your job is to help create {N} new questions for the psychometric scale: {scale}. 
-The questions should be varied, accurate, and straightforward in content, using the original questions as inspiration in terms of style and tone. 
+The questions should be varied, accurate, and straightforward in content, using the original questions as inspiration in terms of style, tone, and length. 
 Occasionally include reverse scored items.
 
 Existing items to use as inspiration: {existing_items}
@@ -24,7 +24,7 @@ The user may or may not have specified a specific requirement related to the cre
 
 {SCALE_DETAILS}
 
-The questions should be varied, accurate, and straightforward in content, using the original questions as inspiration in terms of style and tone. 
+The questions should be varied, accurate, and straightforward in content, using the original questions as inspiration in terms of style, tone, and length. 
 Occasionally include reverse scored items.
 
 Here are all the existing items that currently exist under {TRAIT} to use as inspiration both in terms of content and formatting: 
