@@ -1,3 +1,80 @@
+# import streamlit as st
+# import pandas as pd
+# from langchain_community.chat_models import ChatOpenAI
+# from langchain_community.llms import OpenAI 
+# from langchain.prompts import PromptTemplate 
+# from langchain.chains import LLMChain
+# import io
+# from system_messages import *
+
+# # Initialize the chat model with appropriate parameters
+# chat_model = ChatOpenAI(openai_api_key=st.secrets['API_KEY'], model_name='gpt-4-1106-preview', temperature=0.2, max_tokens=4096)
+
+# # Load the CSV file
+# file_path = 'questions.csv'
+# df = pd.read_csv(file_path)
+
+# st.set_page_config(page_title='TrueYou Question Generator', page_icon=None, layout="wide")
+
+# # Streamlit UI setup
+# st.title("TrueYou Question Generator")
+
+# # Expander for the current scale questions table
+# with st.expander("Click here to see all current scales and questions"):
+#     st.dataframe(df)
+
+# # Category dictionary
+# cat_dict = {'O': 'Openness', 'C': 'Conscientiousness', 'E': 'Extraversion', 'A': 'Agreeableness', 'R': 'Resilience (Inverse Neuroticism)'}
+
+# # New functionality for generating new scales
+# st.markdown("## Generate New Scales")
+# st.markdown("Here you can generate entirely new scales from scratch. Select the category and provide any specific details you'd like for the new scale.")
+
+# with st.form("new_scale_form"):
+#     # Use the category dictionary for the dropdown
+#     selected_cat_key = st.selectbox("Select the category for the new scale:", options=list(cat_dict.keys()), format_func=lambda x: cat_dict[x])
+#     selected_cat = cat_dict[selected_cat_key]  # Get the full category name for display and processing
+#     scale_details = st.text_area("Provide any specific details for the new scale (optional):", "")
+    
+#     submit_button = st.form_submit_button("Generate New Scale")
+
+#     if submit_button:
+#         # Retrieve full current content for all items in the selected category (using the original category key)
+#         cat_content_df = df[df['Cat'] == selected_cat_key]
+        
+#         # Placeholder for LLM chain (assuming prompt templates and llm initialization are correctly set up)
+#         # This is where you would actually call the LLM, but for now, we're simulating the output for demonstration.
+#         chat_chain = LLMChain(prompt=PromptTemplate.from_template(new_scales_prompt), llm=chat_model)
+#         generated_output = chat_chain.run(TRAIT=selected_cat, SCALE_DETAILS=scale_details, EXISTING_ITEMS=cat_content_df.to_string(index=False))
+        
+#         # st.write(generated_output)  # Uncomment this line to debug and see the raw output
+        
+#         # Process the generated scales or questions
+#         new_items = []
+#         for scale_info in generated_output.split('\n'):
+#             values = scale_info.split('|')
+#             if len(values) == len(df.columns):
+#                 new_row = {col: val.strip().strip("'") for col, val in zip(df.columns, values)}
+#                 new_items.append(new_row)
+
+#         if new_items:
+#             new_items_df = pd.DataFrame(new_items)
+            
+#             # Create a subset of the original dataframe that includes only items from the selected category
+#             cat_subset_df = df[df['Cat'] == selected_cat_key].copy()
+            
+#             # Combine the new items with this subset
+#             combined_df = pd.concat([cat_subset_df, new_items_df], ignore_index=True)
+            
+#             # Display updated scales/questions for the selected category
+#             st.markdown(f"### Newly Generated Scales/Questions for {selected_cat}")
+            
+#             # Apply styling to only new rows
+#             num_existing_rows = len(cat_subset_df)
+#             styled_df = combined_df.style.apply(
+#                 lambda x: ['background-color: lightgreen' if x.name >= num_existing_rows else '' for _ in x], axis=1)
+#             st.dataframe(styled_df)
+
 import streamlit as st
 import pandas as pd
 from langchain_community.chat_models import ChatOpenAI
@@ -10,9 +87,11 @@ from system_messages import *
 # Initialize the chat model with appropriate parameters
 chat_model = ChatOpenAI(openai_api_key=st.secrets['API_KEY'], model_name='gpt-4-1106-preview', temperature=0.2, max_tokens=4096)
 
-# Load the CSV file
-file_path = 'questions.csv'
-df = pd.read_csv(file_path)
+# Initialize the DataFrame in session state if it doesn't exist
+if 'df' not in st.session_state:
+    file_path = 'questions.csv'
+    df_initial = pd.read_csv(file_path)
+    st.session_state['df'] = df_initial
 
 st.set_page_config(page_title='TrueYou Question Generator', page_icon=None, layout="wide")
 
@@ -21,7 +100,7 @@ st.title("TrueYou Question Generator")
 
 # Expander for the current scale questions table
 with st.expander("Click here to see all current scales and questions"):
-    st.dataframe(df)
+    st.dataframe(st.session_state['df'])
 
 # Category dictionary
 cat_dict = {'O': 'Openness', 'C': 'Conscientiousness', 'E': 'Extraversion', 'A': 'Agreeableness', 'R': 'Resilience (Inverse Neuroticism)'}
@@ -40,40 +119,39 @@ with st.form("new_scale_form"):
 
     if submit_button:
         # Retrieve full current content for all items in the selected category (using the original category key)
-        cat_content_df = df[df['Cat'] == selected_cat_key]
+        cat_content_df = st.session_state['df'][st.session_state['df']['Cat'] == selected_cat_key]
         
-        # Placeholder for LLM chain (assuming prompt templates and llm initialization are correctly set up)
-        # This is where you would actually call the LLM, but for now, we're simulating the output for demonstration.
+        # Placeholder for LLM chain
         chat_chain = LLMChain(prompt=PromptTemplate.from_template(new_scales_prompt), llm=chat_model)
         generated_output = chat_chain.run(TRAIT=selected_cat, SCALE_DETAILS=scale_details, EXISTING_ITEMS=cat_content_df.to_string(index=False))
-        
-        # st.write(generated_output)  # Uncomment this line to debug and see the raw output
         
         # Process the generated scales or questions
         new_items = []
         for scale_info in generated_output.split('\n'):
             values = scale_info.split('|')
-            if len(values) == len(df.columns):
-                new_row = {col: val.strip().strip("'") for col, val in zip(df.columns, values)}
+            if len(values) == len(st.session_state['df'].columns):
+                new_row = {col: val.strip().strip("'") for col, val in zip(st.session_state['df'].columns, values)}
                 new_items.append(new_row)
 
         if new_items:
             new_items_df = pd.DataFrame(new_items)
             
-            # Create a subset of the original dataframe that includes only items from the selected category
-            cat_subset_df = df[df['Cat'] == selected_cat_key].copy()
+            # Display proposed changes to the user
+            st.markdown("### Proposed Changes")
+            st.dataframe(new_items_df)
             
-            # Combine the new items with this subset
-            combined_df = pd.concat([cat_subset_df, new_items_df], ignore_index=True)
-            
-            # Display updated scales/questions for the selected category
-            st.markdown(f"### Newly Generated Scales/Questions for {selected_cat}")
-            
-            # Apply styling to only new rows
-            num_existing_rows = len(cat_subset_df)
-            styled_df = combined_df.style.apply(
-                lambda x: ['background-color: lightgreen' if x.name >= num_existing_rows else '' for _ in x], axis=1)
-            st.dataframe(styled_df)
+            # Ask the user for confirmation to integrate these changes
+            confirm_button = st.button("Confirm and Integrate Changes", key="confirm_new_scale")
+            discard_button = st.button("Discard Changes", key="discard_new_scale")
+
+            if confirm_button:
+                # Combine the new items with the current DataFrame in session state
+                updated_df = pd.concat([st.session_state['df'], new_items_df], ignore_index=True)
+                st.session_state['df'] = updated_df
+                st.success("Changes have been integrated successfully!")
+
+            elif discard_button:
+                st.info("Changes have been discarded.")
 
 # Layout with two columns (existing functionality for generating new questions within a scale)
 col1, col2 = st.columns([3, 1])
