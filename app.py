@@ -109,49 +109,48 @@ cat_dict = {'O': 'Openness', 'C': 'Conscientiousness', 'E': 'Extraversion', 'A':
 st.markdown("## Generate New Scales")
 st.markdown("Here you can generate entirely new scales from scratch. Select the category and provide any specific details you'd like for the new scale.")
 
-with st.form("new_scale_form"):
-    # Use the category dictionary for the dropdown
-    selected_cat_key = st.selectbox("Select the category for the new scale:", options=list(cat_dict.keys()), format_func=lambda x: cat_dict[x])
-    selected_cat = cat_dict[selected_cat_key]  # Get the full category name for display and processing
-    scale_details = st.text_area("Provide any specific details for the new scale (optional):", "")
+# Use the category dictionary for the dropdown
+selected_cat_key = st.selectbox("Select the category for the new scale:", options=list(cat_dict.keys()), format_func=lambda x: cat_dict[x])
+selected_cat = cat_dict[selected_cat_key]  # Get the full category name for display and processing
+scale_details = st.text_area("Provide any specific details for the new scale (optional):", "")
+
+submit_button = st.button("Generate New Scale", key="generate_new_scale")
+
+if submit_button:
+    # Retrieve full current content for all items in the selected category (using the original category key)
+    cat_content_df = st.session_state['df'][st.session_state['df']['Cat'] == selected_cat_key]
     
-    submit_button = st.form_submit_button("Generate New Scale")
+    # Placeholder for LLM chain
+    chat_chain = LLMChain(prompt=PromptTemplate.from_template(new_scales_prompt), llm=chat_model)
+    generated_output = chat_chain.run(TRAIT=selected_cat, SCALE_DETAILS=scale_details, EXISTING_ITEMS=cat_content_df.to_string(index=False))
+    
+    # Process the generated scales or questions
+    new_items = []
+    for scale_info in generated_output.split('\n'):
+        values = scale_info.split('|')
+        if len(values) == len(st.session_state['df'].columns):
+            new_row = {col: val.strip().strip("'") for col, val in zip(st.session_state['df'].columns, values)}
+            new_items.append(new_row)
 
-    if submit_button:
-        # Retrieve full current content for all items in the selected category (using the original category key)
-        cat_content_df = st.session_state['df'][st.session_state['df']['Cat'] == selected_cat_key]
+    if new_items:
+        new_items_df = pd.DataFrame(new_items)
         
-        # Placeholder for LLM chain
-        chat_chain = LLMChain(prompt=PromptTemplate.from_template(new_scales_prompt), llm=chat_model)
-        generated_output = chat_chain.run(TRAIT=selected_cat, SCALE_DETAILS=scale_details, EXISTING_ITEMS=cat_content_df.to_string(index=False))
+        # Display proposed changes to the user
+        st.markdown("### Proposed Changes")
+        st.dataframe(new_items_df)
         
-        # Process the generated scales or questions
-        new_items = []
-        for scale_info in generated_output.split('\n'):
-            values = scale_info.split('|')
-            if len(values) == len(st.session_state['df'].columns):
-                new_row = {col: val.strip().strip("'") for col, val in zip(st.session_state['df'].columns, values)}
-                new_items.append(new_row)
+        # Ask the user for confirmation to integrate these changes
+        confirm_button = st.button("Confirm and Integrate Changes", key="confirm_new_scale")
+        discard_button = st.button("Discard Changes", key="discard_new_scale")
 
-        if new_items:
-            new_items_df = pd.DataFrame(new_items)
-            
-            # Display proposed changes to the user
-            st.markdown("### Proposed Changes")
-            st.dataframe(new_items_df)
-            
-            # Ask the user for confirmation to integrate these changes
-            confirm_button = st.button("Confirm and Integrate Changes", key="confirm_new_scale")
-            discard_button = st.button("Discard Changes", key="discard_new_scale")
+        if confirm_button:
+            # Combine the new items with the current DataFrame in session state
+            updated_df = pd.concat([st.session_state['df'], new_items_df], ignore_index=True)
+            st.session_state['df'] = updated_df
+            st.success("Changes have been integrated successfully!")
 
-            if confirm_button:
-                # Combine the new items with the current DataFrame in session state
-                updated_df = pd.concat([st.session_state['df'], new_items_df], ignore_index=True)
-                st.session_state['df'] = updated_df
-                st.success("Changes have been integrated successfully!")
-
-            elif discard_button:
-                st.info("Changes have been discarded.")
+        elif discard_button:
+            st.info("Changes have been discarded.")
 
 # # Layout with two columns (existing functionality for generating new questions within a scale)
 # col1, col2 = st.columns([3, 1])
