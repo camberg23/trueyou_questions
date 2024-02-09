@@ -219,6 +219,7 @@ if not st.session_state['proposed_questions'].empty:
         # Clear proposed questions after integration
         st.session_state['proposed_questions'] = pd.DataFrame()
         st.success("New questions have been integrated successfully!")
+        st.rerun()
 
     elif discard_button:
         # Clear proposed questions without integrating
