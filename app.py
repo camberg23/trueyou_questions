@@ -53,7 +53,8 @@ if submit_button:
     # Placeholder for LLM chain
     chat_chain = LLMChain(prompt=PromptTemplate.from_template(new_scales_prompt), llm=chat_model)
     generated_output = chat_chain.run(TRAIT=selected_cat, SCALE_DETAILS=scale_details, EXISTING_ITEMS=cat_content_df.to_string(index=False))
-    
+    st.write(f"LLM OUTPUT: {generated_output}")
+
     # Process the generated questions
     new_items = []
     for question in generated_output.split('\n'):
