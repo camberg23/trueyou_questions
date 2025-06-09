@@ -47,14 +47,16 @@ scale_details = st.text_area("Provide any specific details for the new scale (op
 submit_button = st.button("Generate New Scale", key="generate_new_scale")
 
 if submit_button:
+    st.write("🔥 NEW SCALE BUTTON WAS CLICKED!")
     # Retrieve full current content for all items in the selected category (using scale key prefix)
     cat_content_df = st.session_state['df'][st.session_state['df']['Scale Key'].str.startswith(selected_cat_key)]
     
     # Placeholder for LLM chain
     chat_chain = LLMChain(prompt=PromptTemplate.from_template(new_scales_prompt), llm=chat_model)
     generated_output = chat_chain.run(TRAIT=selected_cat, SCALE_DETAILS=scale_details, EXISTING_ITEMS=cat_content_df.to_string(index=False))
+    
     st.write(f"LLM OUTPUT: {generated_output}")
-
+    
     # Process the generated questions
     new_items = []
     for question in generated_output.split('\n'):
@@ -63,10 +65,11 @@ if submit_button:
         st.write(f"Debug - Generated line: {question}")
         st.write(f"Debug - Split values ({len(values)}): {values}")
         st.write(f"Debug - Expected columns ({len(st.session_state['df'].columns)}): {list(st.session_state['df'].columns)}")
-    
+        
         if len(values) == len(st.session_state['df'].columns):
             new_row = {col: val.strip().strip("'") for col, val in zip(st.session_state['df'].columns, values)}
             new_items.append(new_row)
+            st.write(f"Debug - Added item: {new_row}")
 
     if new_items:
         # Store proposed changes in the session state
@@ -113,8 +116,6 @@ with col1:
         items_with_trait = st.session_state['df'][st.session_state['df']['Trait Key'] == trait_key]
         if not items_with_trait.empty:
             scale_key = items_with_trait.iloc[0]['Scale Key']
-            # Extract category from scale key (first letter)
-            cat_key = scale_key[0] if scale_key else 'Unknown'
             scale_options.append(f"{title} ({scale_key})")
     
     # Sort scale options by scale key
@@ -133,32 +134,56 @@ with col2:
 
 # Button to generate new questions
 if st.button("Generate New Questions"):
+    st.write("🔥 BUTTON WAS CLICKED!")
+    st.write(f"Selected scales: {selected_scales}")
+    st.write(f"Number of selected scales: {len(selected_scales)}")
+    
     all_new_items = []  # To hold all new items for all selected scales
     for scale_option in selected_scales:
+        st.write(f"Processing scale: {scale_option}")
+        
         # Extract scale key from display format "Title (Scale Key)"
         scale_key = scale_option.split(' (')[-1].rstrip(')')
+        st.write(f"Extracted scale key: {scale_key}")
         
         # Get trait key for this scale key
         trait_key_row = st.session_state['df'][st.session_state['df']['Scale Key'] == scale_key]
         if not trait_key_row.empty:
             trait_key = trait_key_row.iloc[0]['Trait Key']
+            st.write(f"Found trait key: {trait_key}")
+            
             scale_df = st.session_state['df'][st.session_state['df']['Trait Key'] == trait_key].copy()
+            st.write(f"Found {len(scale_df)} existing items for this trait")
 
             # Your existing LLM logic for generating new questions
             chat_chain = LLMChain(prompt=PromptTemplate.from_template(new_questions_prompt), llm=chat_model)
+            st.write("About to call LLM...")
+            
             generated_output = chat_chain.run(N=N, scale=trait_key, existing_items=scale_df.to_string(index=False))
+            st.write(f"LLM OUTPUT: {generated_output}")
 
             # Process the generated questions
             new_items = []
             for question in generated_output.split('\n'):
                 values = question.split('|')
+                st.write(f"Debug - Generated line: {question}")
+                st.write(f"Debug - Split values ({len(values)}): {values}")
+                st.write(f"Debug - Expected columns ({len(st.session_state['df'].columns)}): {list(st.session_state['df'].columns)}")
+                
                 if len(values) == len(st.session_state['df'].columns):
                     new_row = {col: val.strip().strip("'") for col, val in zip(st.session_state['df'].columns, values)}
                     new_items.append(new_row)
+                    st.write(f"Debug - Added item: {new_row}")
+                    
             if new_items:
                 # Store new items temporarily, keyed by scale name
                 all_new_items.extend(new_items)  # Extend the list with new items for this scale
+                st.write(f"Added {len(new_items)} new items for {scale_option}")
+        else:
+            st.write(f"❌ No trait key found for scale key: {scale_key}")
 
+    st.write(f"Total new items generated: {len(all_new_items)}")
+    
     if all_new_items:
         # Update session state with proposed questions for all selected scales
         st.session_state['proposed_questions'] = pd.DataFrame(all_new_items)
@@ -196,7 +221,7 @@ if not st.session_state['df'].empty:
         data=csv,
         file_name='updated_questions.csv',
         mime='text/csv')
-
+    
 # import streamlit as st
 # import pandas as pd
 # from langchain_community.chat_models import ChatOpenAI
