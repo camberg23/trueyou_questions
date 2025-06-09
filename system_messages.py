@@ -7,14 +7,14 @@ Existing items to use as inspiration: {existing_items}
 
 Format each new question as follows, with each field separated by a '|' and each question on a new line:
 
-'Category'|'Scale Name'|'Scale #'|'Scale Key'|'Item Text'|'Session'|'Trait Key'|'Reverse'
+'Scale Key'|'Trait Key'|'Item Text'|'Reverse'
 
 Example:
-'A'|'Accommodating'|1|'A1'|'new question text 1'| |'accommodating'|False
-'A'|'Accommodating'|1|'A1'|'new question text 2'| |'accommodating'|False
-'A'|'Accommodating'|1|'A1'|'new question text 3'| |'accommodating'|True
+'A3'|'modest'|'I rarely boast about my achievements'|False
+'A3'|'modest'|'I often highlight my own accomplishments'|True
+'A3'|'modest'|'I prefer to downplay my successes'|False
 
-Please provide {N} new questions in this EXACT format (for now, please just leave the 'Session' column blank as shown above!).
+Please provide {N} new questions in this EXACT format.
 """
 
 new_scales_prompt = """
@@ -32,12 +32,12 @@ Here are all the existing items that currently exist under {TRAIT} to use as ins
 
 Format each new question as follows, with each field separated by a '|' and each question on a new line:
 
-'Category'|'Scale Name'|'Scale #'|'Scale Key'|'Item Text'|'Session'|'Trait Key'|'Reverse'
+'Scale Key'|'Trait Key'|'Item Text'|'Reverse'
 
 Example:
-'A'|'Accommodating'|1|'A1'|'new question text 1'| |'accommodating'|False
-'A'|'Accommodating'|1|'A1'|'new question text 2'| |'accommodating'|False
-'A'|'Accommodating'|1|'A1'|'new question text 3'| |'accommodating'|True
+'A10'|'newtraitkey'|'I tend to prioritize others needs over my own'|False
+'A10'|'newtraitkey'|'I often put myself first in most situations'|True
+'A10'|'newtraitkey'|'I naturally consider how my actions affect others'|False
 
-Please provide 6 new questions in this EXACT format for the SINGLE new scale (please just leave the 'Session' column blank as shown above, and PLEASE increment the scale number by one, as these questions will be added on as a new scale).
+Please provide 6 new questions in this EXACT format for the SINGLE new scale. Use an appropriate new Scale Key (increment the number from existing ones in this category) and create a meaningful new Trait Key that describes the scale.
 """
