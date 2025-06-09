@@ -63,9 +63,9 @@ if submit_button:
         st.write(f"Debug - Split values ({len(values)}): {values}")
         st.write(f"Debug - Expected columns ({len(st.session_state['df'].columns)}): {list(st.session_state['df'].columns)}")
     
-    if len(values) == len(st.session_state['df'].columns):
-        new_row = {col: val.strip().strip("'") for col, val in zip(st.session_state['df'].columns, values)}
-        new_items.append(new_row)
+        if len(values) == len(st.session_state['df'].columns):
+            new_row = {col: val.strip().strip("'") for col, val in zip(st.session_state['df'].columns, values)}
+            new_items.append(new_row)
 
     if new_items:
         # Store proposed changes in the session state
