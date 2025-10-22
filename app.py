@@ -147,16 +147,19 @@ with col1:
     # Load scales info to create better display names
     scales_df = pd.read_csv('Updated App Test 6_5_25 - Scales.csv')
     
-    # Create scale options using both Scale Key and Title for better display
+    # Create scale options using Scale Key, Title, and Scale for better display
     scale_options = []
     for _, scale_row in scales_df.iterrows():
         trait_key = scale_row['Scale']
         title = scale_row['Title']
+        scale_name = scale_row.get('Scale', trait_key)  # Use Scale column if available, else trait_key
+        
         # Find corresponding Scale Key from items
         items_with_trait = st.session_state['df'][st.session_state['df']['Trait Key'] == trait_key]
         if not items_with_trait.empty:
             scale_key = items_with_trait.iloc[0]['Scale Key']
-            scale_options.append(f"{title} ({scale_key})")
+            # Format: "Title - Scale Name (Scale Key)"
+            scale_options.append(f"{title} - {scale_name} ({scale_key})")
     
     # Sort scale options by scale key
     def sort_key(option):
@@ -176,7 +179,7 @@ with col2:
 if st.button("Generate New Questions"):
     all_new_items = []  # To hold all new items for all selected scales
     for scale_option in selected_scales:
-        # Extract scale key from display format "Title (Scale Key)"
+        # Extract scale key from display format "Title - Scale Name (Scale Key)"
         scale_key = scale_option.split(' (')[-1].rstrip(')')
         
         # Get trait key for this scale key
