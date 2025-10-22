@@ -190,7 +190,15 @@ if st.button("Generate New Questions"):
         
         # Display proposed changes to the user
         st.markdown("### Proposed New Questions")
-        st.dataframe(st.session_state['proposed_questions'])
+        # st.dataframe(st.session_state['proposed_questions'])
+        # Change to:
+        st.session_state['proposed_questions'] = st.data_editor(
+            st.session_state['proposed_questions'],
+            num_rows="dynamic",  # Allows deleting rows
+            use_container_width=True,
+            key="edit_proposed_questions"
+        )
+
 
 # Display buttons for confirmation only if there are proposed questions
 if not st.session_state['proposed_questions'].empty:
