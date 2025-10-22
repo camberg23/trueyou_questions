@@ -13,11 +13,24 @@ chat_model = ChatOpenAI(openai_api_key=st.secrets['API_KEY'], model_name='gpt-4.
 
 st.set_page_config(page_title='TrueYou Question Generator', page_icon=None, layout="wide")
 
+# File upload option at the top
+st.markdown("### Optional: Upload Previous CSV to Continue Work")
+uploaded_file = st.file_uploader("Upload a CSV file to continue from where you left off (otherwise uses the default CSV)", type=['csv'])
+
 # Initialize the DataFrame in session state if it doesn't exist
 if 'df' not in st.session_state:
-    file_path = 'All App Test Items as of Oct 25 - Sheet1.csv'
-    df_initial = pd.read_csv(file_path)
+    if uploaded_file is not None:
+        df_initial = pd.read_csv(uploaded_file)
+        st.success("✅ Loaded uploaded CSV file!")
+    else:
+        file_path = 'All App Test Items as of Oct 25 - Sheet1.csv'
+        df_initial = pd.read_csv(file_path)
     st.session_state['df'] = df_initial
+elif uploaded_file is not None:
+    # If user uploads a new file mid-session, update the dataframe
+    df_initial = pd.read_csv(uploaded_file)
+    st.session_state['df'] = df_initial
+    st.success("✅ Loaded uploaded CSV file!")
 
 if 'proposed_changes' not in st.session_state:
     st.session_state['proposed_changes'] = pd.DataFrame()
@@ -169,7 +182,21 @@ with col1:
         return (letter, int(number) if number else 0)
     
     scale_options.sort(key=sort_key)
-    selected_scales = st.multiselect("Select which scales you'd like to generate new questions for:", scale_options)
+    
+    # Add "Select All" checkbox
+    select_all = st.checkbox("Select all scales", value=False)
+    
+    if select_all:
+        selected_scales = st.multiselect(
+            "Select which scales you'd like to generate new questions for:", 
+            scale_options,
+            default=scale_options
+        )
+    else:
+        selected_scales = st.multiselect(
+            "Select which scales you'd like to generate new questions for:", 
+            scale_options
+        )
 
 # Column for specifying the number of new questions
 with col2:
