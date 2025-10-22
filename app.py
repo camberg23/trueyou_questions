@@ -152,55 +152,54 @@ st.write("---")
 st.markdown("## Generate New Questions")
 st.markdown("Here, you can generate new questions for existing scales.")
 
-# Layout with two columns for generating new questions within a scale
+# Load scales info to create better display names
+scales_df = pd.read_csv('Updated App Test 6_5_25 - Scales.csv')
+
+# Create scale options using Scale Key, Title, and Scale for better display
+scale_options = []
+for _, scale_row in scales_df.iterrows():
+    trait_key = scale_row['Scale']
+    title = scale_row['Title']
+    scale_name = scale_row.get('Scale', trait_key)  # Use Scale column if available, else trait_key
+    
+    # Find corresponding Scale Key from items
+    items_with_trait = st.session_state['df'][st.session_state['df']['Trait Key'] == trait_key]
+    if not items_with_trait.empty:
+        scale_key = items_with_trait.iloc[0]['Scale Key']
+        # Format: "Title - Scale Name (Scale Key)"
+        scale_options.append(f"{title} - {scale_name} ({scale_key})")
+
+# Sort scale options by scale key
+def sort_key(option):
+    scale_key = option.split(" (")[-1].rstrip(")")
+    letter = ''.join(filter(str.isalpha, scale_key))
+    number = ''.join(filter(str.isdigit, scale_key))
+    return (letter, int(number) if number else 0)
+
+scale_options.sort(key=sort_key)
+
+# Layout: checkbox and number input side by side
 col1, col2 = st.columns([3, 1])
 
-# Column for scale selection
 with col1:
-    # Load scales info to create better display names
-    scales_df = pd.read_csv('Updated App Test 6_5_25 - Scales.csv')
-    
-    # Create scale options using Scale Key, Title, and Scale for better display
-    scale_options = []
-    for _, scale_row in scales_df.iterrows():
-        trait_key = scale_row['Scale']
-        title = scale_row['Title']
-        scale_name = scale_row.get('Scale', trait_key)  # Use Scale column if available, else trait_key
-        
-        # Find corresponding Scale Key from items
-        items_with_trait = st.session_state['df'][st.session_state['df']['Trait Key'] == trait_key]
-        if not items_with_trait.empty:
-            scale_key = items_with_trait.iloc[0]['Scale Key']
-            # Format: "Title - Scale Name (Scale Key)"
-            scale_options.append(f"{title} - {scale_name} ({scale_key})")
-    
-    # Sort scale options by scale key
-    def sort_key(option):
-        scale_key = option.split(" (")[-1].rstrip(")")
-        letter = ''.join(filter(str.isalpha, scale_key))
-        number = ''.join(filter(str.isdigit, scale_key))
-        return (letter, int(number) if number else 0)
-    
-    scale_options.sort(key=sort_key)
-    
     # Add "Select All" checkbox
     select_all = st.checkbox("Select all scales", value=False)
-    
-    if select_all:
-        selected_scales = st.multiselect(
-            "Select which scales you'd like to generate new questions for:", 
-            scale_options,
-            default=scale_options
-        )
-    else:
-        selected_scales = st.multiselect(
-            "Select which scales you'd like to generate new questions for:", 
-            scale_options
-        )
 
-# Column for specifying the number of new questions
 with col2:
     N = st.number_input("Number of new questions for each scale:", min_value=1, max_value=25, value=5)
+
+# Multiselect below (full width)
+if select_all:
+    selected_scales = st.multiselect(
+        "Select which scales you'd like to generate new questions for:", 
+        scale_options,
+        default=scale_options
+    )
+else:
+    selected_scales = st.multiselect(
+        "Select which scales you'd like to generate new questions for:", 
+        scale_options
+    )
 
 # Button to generate new questions
 if st.button("Generate New Questions"):
