@@ -25,6 +25,9 @@ if 'proposed_changes' not in st.session_state:
 if 'proposed_questions' not in st.session_state:
     st.session_state['proposed_questions'] = pd.DataFrame()
 
+if 'changes_confirmed' not in st.session_state:
+    st.session_state['changes_confirmed'] = False
+
 # Streamlit UI setup
 st.title("TrueYou Question/Scale Generator")
 
@@ -79,16 +82,19 @@ if not st.session_state['proposed_changes'].empty:
         key="edit_proposed_changes"
     )
     
-    confirm_button = st.button("Confirm and Integrate Changes", key="confirm_new_scale")
-    discard_button = st.button("Discard Changes", key="discard_new_scale")
+    col_confirm, col_discard = st.columns(2)
+    with col_confirm:
+        confirm_button = st.button("Confirm and Integrate Changes", key="confirm_new_scale", use_container_width=True)
+    with col_discard:
+        discard_button = st.button("Discard Changes", key="discard_new_scale", use_container_width=True)
 
     if confirm_button:
         # Integrate proposed changes with the main DataFrame
         updated_df = pd.concat([st.session_state['df'], st.session_state['proposed_changes']], ignore_index=True)
         st.session_state['df'] = updated_df
         st.session_state['proposed_changes'] = pd.DataFrame()  # Clear proposed changes
+        st.session_state['changes_confirmed'] = True
         st.success("Changes have been integrated successfully!")
-        st.rerun()
 
     elif discard_button:
         # Clear proposed changes without integrating
@@ -180,8 +186,11 @@ if not st.session_state['proposed_questions'].empty:
         key="edit_proposed_questions"
     )
     
-    confirm_button = st.button("Confirm and Integrate Questions", key="confirm_new_questions")
-    discard_button = st.button("Discard Questions", key="discard_new_questions")
+    col_confirm, col_discard = st.columns(2)
+    with col_confirm:
+        confirm_button = st.button("Confirm and Integrate Questions", key="confirm_new_questions", use_container_width=True)
+    with col_discard:
+        discard_button = st.button("Discard Questions", key="discard_new_questions", use_container_width=True)
 
     if confirm_button:
         # Integrate proposed questions with the main DataFrame
@@ -189,21 +198,27 @@ if not st.session_state['proposed_questions'].empty:
         st.session_state['df'] = updated_df
         # Clear proposed questions after integration
         st.session_state['proposed_questions'] = pd.DataFrame()
+        st.session_state['changes_confirmed'] = True
         st.success("New questions have been integrated successfully!")
-        st.rerun()
 
     elif discard_button:
         # Clear proposed questions without integrating
         st.session_state['proposed_questions'] = pd.DataFrame()
         st.info("Proposed questions have been discarded.")
 
-st.markdown("")
-st.markdown("")
+st.markdown("---")
     
-if not st.session_state['df'].empty:
-    csv = st.session_state['df'].to_csv(index=False).encode('utf-8')
-    st.download_button(
-        label="Download updated questions as a CSV",
-        data=csv,
-        file_name='updated_questions.csv',
-        mime='text/csv')
+# Only show download button if changes were confirmed or there are no pending changes
+if st.session_state['changes_confirmed'] or (st.session_state['proposed_changes'].empty and st.session_state['proposed_questions'].empty):
+    if not st.session_state['df'].empty:
+        csv = st.session_state['df'].to_csv(index=False).encode('utf-8')
+        st.download_button(
+            label="Download updated questions as a CSV",
+            data=csv,
+            file_name='updated_questions.csv',
+            mime='text/csv')
+        # Reset the flag after showing download button
+        if st.session_state['changes_confirmed']:
+            st.session_state['changes_confirmed'] = False
+else:
+    st.info("⚠️ Please confirm or discard your pending changes before downloading.")
