@@ -28,6 +28,40 @@ if 'proposed_questions' not in st.session_state:
 if 'changes_confirmed' not in st.session_state:
     st.session_state['changes_confirmed'] = False
 
+def insert_questions_by_scale(main_df, new_df):
+    """Insert new questions at the end of their respective scale groups"""
+    if new_df.empty:
+        return main_df
+    
+    # Group new questions by Scale Key
+    grouped_new = new_df.groupby('Scale Key')
+    
+    # Create a list to hold all dataframe sections
+    df_sections = []
+    processed_scales = set()
+    
+    # Iterate through the main dataframe by scale
+    for scale_key in main_df['Scale Key'].unique():
+        # Get all rows for this scale from main df
+        scale_rows = main_df[main_df['Scale Key'] == scale_key]
+        df_sections.append(scale_rows)
+        
+        # If there are new questions for this scale, add them after
+        if scale_key in grouped_new.groups:
+            new_scale_rows = grouped_new.get_group(scale_key)
+            df_sections.append(new_scale_rows)
+            processed_scales.add(scale_key)
+    
+    # Add any new questions for scales that don't exist yet in main df
+    for scale_key in grouped_new.groups:
+        if scale_key not in processed_scales:
+            new_scale_rows = grouped_new.get_group(scale_key)
+            df_sections.append(new_scale_rows)
+    
+    # Concatenate all sections
+    result_df = pd.concat(df_sections, ignore_index=True)
+    return result_df
+
 # Streamlit UI setup
 st.title("TrueYou Question/Scale Generator")
 
@@ -89,8 +123,8 @@ if not st.session_state['proposed_changes'].empty:
         discard_button = st.button("Discard Changes", key="discard_new_scale", use_container_width=True)
 
     if confirm_button:
-        # Integrate proposed changes with the main DataFrame
-        updated_df = pd.concat([st.session_state['df'], st.session_state['proposed_changes']], ignore_index=True)
+        # Integrate proposed changes with the main DataFrame using smart insertion
+        updated_df = insert_questions_by_scale(st.session_state['df'], st.session_state['proposed_changes'])
         st.session_state['df'] = updated_df
         st.session_state['proposed_changes'] = pd.DataFrame()  # Clear proposed changes
         st.session_state['changes_confirmed'] = True
@@ -193,8 +227,8 @@ if not st.session_state['proposed_questions'].empty:
         discard_button = st.button("Discard Questions", key="discard_new_questions", use_container_width=True)
 
     if confirm_button:
-        # Integrate proposed questions with the main DataFrame
-        updated_df = pd.concat([st.session_state['df'], st.session_state['proposed_questions']], ignore_index=True)
+        # Integrate proposed questions with the main DataFrame using smart insertion
+        updated_df = insert_questions_by_scale(st.session_state['df'], st.session_state['proposed_questions'])
         st.session_state['df'] = updated_df
         # Clear proposed questions after integration
         st.session_state['proposed_questions'] = pd.DataFrame()
