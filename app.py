@@ -1,15 +1,22 @@
 import streamlit as st
 import pandas as pd
-from langchain_community.chat_models import ChatOpenAI
-from langchain_community.llms import OpenAI 
-from langchain.prompts import PromptTemplate 
-from langchain.chains import LLMChain
+from openai import OpenAI
 import io
 import base64
 from system_messages import *
 
-# Initialize the chat model with appropriate parameters
-chat_model = ChatOpenAI(openai_api_key=st.secrets['API_KEY'], model_name='gpt-4.1', temperature=0.2, max_tokens=4096)
+# Initialize the OpenAI client
+client = OpenAI(api_key=st.secrets['API_KEY'])
+
+def call_llm(prompt_text):
+    """Simple wrapper for OpenAI chat completions."""
+    response = client.chat.completions.create(
+        model="gpt-4.1",
+        temperature=0.2,
+        max_tokens=4096,
+        messages=[{"role": "user", "content": prompt_text}]
+    )
+    return response.choices[0].message.content
 
 st.set_page_config(page_title='TrueYou Question Generator', page_icon=None, layout="wide")
 
@@ -100,9 +107,13 @@ if submit_button:
     # Retrieve full current content for all items in the selected category (using scale key prefix)
     cat_content_df = st.session_state['df'][st.session_state['df']['Scale Key'].str.startswith(selected_cat_key)]
     
-    # Placeholder for LLM chain
-    chat_chain = LLMChain(prompt=PromptTemplate.from_template(new_scales_prompt), llm=chat_model)
-    generated_output = chat_chain.run(TRAIT=selected_cat, SCALE_DETAILS=scale_details, EXISTING_ITEMS=cat_content_df.to_string(index=False))
+    # Format the prompt and call LLM directly
+    prompt_text = new_scales_prompt.format(
+        TRAIT=selected_cat,
+        SCALE_DETAILS=scale_details,
+        EXISTING_ITEMS=cat_content_df.to_string(index=False)
+    )
+    generated_output = call_llm(prompt_text)
     
     st.write(f"LLM OUTPUT: {generated_output}")
     
@@ -215,10 +226,13 @@ if st.button("Generate New Questions"):
             
             scale_df = st.session_state['df'][st.session_state['df']['Trait Key'] == trait_key].copy()
 
-            # Your existing LLM logic for generating new questions
-            chat_chain = LLMChain(prompt=PromptTemplate.from_template(new_questions_prompt), llm=chat_model)
-            
-            generated_output = chat_chain.run(N=N, scale=trait_key, existing_items=scale_df.to_string(index=False))
+            # Format the prompt and call LLM directly
+            prompt_text = new_questions_prompt.format(
+                N=N,
+                scale=trait_key,
+                existing_items=scale_df.to_string(index=False)
+            )
+            generated_output = call_llm(prompt_text)
 
             # Process the generated questions
             new_items = []
